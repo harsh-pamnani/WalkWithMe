@@ -33,7 +33,7 @@ public class HomeActivity extends AppCompatActivity {
         Walk walk1 = new Walk("The Fats and the Furious","20-Apr-2019 2:00PM", "Citadel Hill Entrance");
         Walk walk2 = new Walk("The Mean Elder Machine","19-Apr-2019 5:00AM", "Elder Home #2");
         Walk walk3 = new Walk("Mommy Group","19-Aug-2019 3:00PM", "Happy Day Care");
-        /*
+
         Walk walk4 = new Walk("Mommy Group","19-Aug-2019 3:00PM", "Happy Day Care");
         Walk walk5 = new Walk("Mommy Group","19-Aug-2019 3:00PM", "Happy Day Care");
         Walk walk6 = new Walk("Mommy Group","19-Aug-2019 3:00PM", "Happy Day Care");
@@ -41,14 +41,14 @@ public class HomeActivity extends AppCompatActivity {
         Walk walk8 = new Walk("Mommy Group","19-Aug-2019 3:00PM", "Happy Day Care");
         Walk walk9 = new Walk("Mommy Group","19-Aug-2019 3:00PM", "Happy Day Care");
         Walk walk10 = new Walk("Mommy Group","19-Aug-2019 3:00PM", "Happy Day Care");
-        */
+
 
         final ArrayList<Walk> walkArrayList = new ArrayList<>();
 
         walkArrayList.add(walk1);
         walkArrayList.add(walk2);
         walkArrayList.add(walk3);
-        /*
+
         walkArrayList.add(walk4);
         walkArrayList.add(walk5);
         walkArrayList.add(walk6);
@@ -56,36 +56,18 @@ public class HomeActivity extends AppCompatActivity {
         walkArrayList.add(walk8);
         walkArrayList.add(walk9);
         walkArrayList.add(walk10);
-        */
 
+
+
+
+
+        //create Adapter instance
         WalkListAdapter walkListAdapter = new WalkListAdapter(this, R.layout.listview_item, walkArrayList);
+
+        //apply the adapter to the walk ArrayList
         walkList.setAdapter(walkListAdapter);
 
-
-        /*
-        final ArrayList<String> arrayList = new ArrayList<>();
-
-        arrayList.add("Walk 1");
-        arrayList.add("Walk 2");
-        arrayList.add("Walk 3");
-        arrayList.add("Walk 4");
-        arrayList.add("Walk 5");
-        arrayList.add("Walk 6");
-        arrayList.add("Walk 7");
-        arrayList.add("Walk 8");
-        arrayList.add("Walk 9");
-        arrayList.add("Walk 10");
-        arrayList.add("Walk 11");
-        arrayList.add("Walk 12");
-        arrayList.add("Walk 13");
-
-        ArrayAdapter arrayAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, arrayList);
-
-        walkList.setAdapter(arrayAdapter);
-        */
-
-
-
+        //OnClickListener if one of the list items is clicked
         walkList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int i, long id) {

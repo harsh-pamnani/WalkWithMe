@@ -14,7 +14,18 @@ public class WalkListAdapter extends ArrayAdapter<Walk> {
 
 
     private Context mContext;
-    int mResource;
+    private int mResource;
+
+
+    static class ViewHolder{
+        TextView name;
+        TextView datetime;
+        TextView location;
+
+    }
+
+
+
 
     public WalkListAdapter(Context context, int resource, ArrayList<Walk> objects) {
         super(context, resource, objects);
@@ -26,24 +37,37 @@ public class WalkListAdapter extends ArrayAdapter<Walk> {
     @NonNull
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
+
         //get the Walk information
         String name = getItem(position).getEventName();
         String datetime = getItem(position).getEventDatetime();
         String location = getItem(position).getEventLocation();
 
-        //Create a Walk object with the information
-        Walk walk = new Walk(name,datetime,location);
+        //create a ViewHolder object
+        ViewHolder viewholder;
 
-        LayoutInflater inflater = LayoutInflater.from(mContext);
-        convertView = inflater.inflate(mResource, parent, false);
+        //ensure that not all values are loaded into the
+        if(convertView == null){
 
-        TextView textEventName = (TextView) convertView.findViewById(R.id.walkTitle);
-        TextView textEventDateTime = (TextView) convertView.findViewById(R.id.walkDatetime);
-        TextView textEventLocation = (TextView) convertView.findViewById(R.id.walkLocation);
+            LayoutInflater inflater = LayoutInflater.from(mContext);
+            convertView = inflater.inflate(mResource, parent, false);
 
-        textEventName.setText(name);
-        textEventDateTime.setText(datetime);
-        textEventLocation.setText(location);
+            viewholder = new ViewHolder();
+
+            viewholder.name = (TextView) convertView.findViewById(R.id.walkTitle);
+            viewholder.datetime = (TextView) convertView.findViewById(R.id.walkDatetime);
+            viewholder.location= (TextView) convertView.findViewById(R.id.walkLocation);
+
+            convertView.setTag(viewholder);
+
+        }else{
+
+            viewholder = (ViewHolder) convertView.getTag();
+        }
+
+        viewholder.name.setText(name);
+        viewholder.datetime.setText(datetime);
+        viewholder.location.setText(location);
 
         return convertView;
     }
