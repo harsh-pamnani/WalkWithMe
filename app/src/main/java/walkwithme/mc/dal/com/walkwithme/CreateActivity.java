@@ -48,7 +48,7 @@ public class CreateActivity extends AppCompatActivity {
     }
 
     private void updateLabel(EditText edittext, Calendar myCalendar) {
-        String myFormat = "dd/mm/yyyy"; //In which you need put here
+        String myFormat = "dd/MMM/yyyy"; //In which you need put here
         SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
 
         edittext.setText(sdf.format(myCalendar.getTime()));
