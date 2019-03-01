@@ -20,6 +20,12 @@ public class Walk {
         this.eventLocation = location;
         this.eventImageURL = imgURL;
 
+        this.eventId = 0;
+        this.eventCoordinateLang = 0.0f;
+        this.eventCoordinateLong = 0.0f;
+        this.eventDescription = "";
+        this.eventWeather = "";
+
     }
 
     public String getEventName() {

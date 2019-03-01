@@ -1,6 +1,7 @@
 package walkwithme.mc.dal.com.walkwithme;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -17,7 +18,6 @@ public class HomeActivity extends AppCompatActivity {
 
     ListView walkList;
     FloatingActionButton addFab;
-
     ArrayList<Walk> walkArrayList;
 
     @Override
@@ -27,8 +27,60 @@ public class HomeActivity extends AppCompatActivity {
 
         mActivty = this;
         walkList = findViewById(R.id.list_walks);
-        addFab = findViewById(R.id.addFab);
+        addFab =   findViewById(R.id.addFab);
 
+        //OnClickListener if one of the list items is clicked
+        walkList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int i, long id) {
+
+                //Toast.makeText(HomeActivity.this, "clicked item: " + i + " "+ walkArrayList.get(i).toString(), Toast.LENGTH_LONG).show();
+
+                Intent viewIntent= new Intent(HomeActivity.this, ViewActivityTemp.class);
+
+                //put eventID into the intent as it is unique and will not require default values
+                viewIntent.putExtra("eventId", walkArrayList.get(i).getEventId());
+
+                Bundle viewBundle = new Bundle();
+
+                //put the rest into a bundle so that we can use default values if required
+                viewBundle.putString("eventName", walkArrayList.get(i).getEventName());
+                viewBundle.putString("eventDatetime", walkArrayList.get(i).getEventDatetime());
+                viewBundle.putString("eventLocation", walkArrayList.get(i).getEventLocation());
+                viewBundle.putString("eventImageURL", walkArrayList.get(i).getEventImageURL());
+                viewBundle.putFloat("eventCoordinateLang", walkArrayList.get(i).getEventCoordinateLang());
+                viewBundle.putFloat("eventCoordinateLong", walkArrayList.get(i).getEventCoordinateLong());
+                viewBundle.putString("eventDescription", walkArrayList.get(i).getEventDescription());
+                viewBundle.putString("eventWeather", walkArrayList.get(i).getEventWeather());
+
+                //add bundle to intent
+                viewIntent.putExtra("bundle", viewBundle);
+
+                //start activity with intent information
+                startActivity(viewIntent);
+
+            }
+        });
+
+
+        //Create click listener for add button
+        addFab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                // Intent creation for View Activity
+                Intent createIntent= new Intent(HomeActivity.this, CreateActivityTemp.class);
+                startActivity(createIntent);
+            }
+        });
+
+
+    }
+
+
+    @Override
+    protected void onStart() {
+        super.onStart();
 
         //array containing all walk items
         walkArrayList = new ArrayList<>();
@@ -45,32 +97,6 @@ public class HomeActivity extends AppCompatActivity {
 
         //apply the adapter to the walk ArrayList
         walkList.setAdapter(walkListAdapter);
-
-
-        //OnClickListener if one of the list items is clicked
-        walkList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int i, long id) {
-
-                Toast.makeText(HomeActivity.this, "clicked item: " + i + " "+ walkArrayList.get(i).toString(), Toast.LENGTH_LONG).show();
-
-            }
-        });
-
-
-        //Create click listener for add button
-        addFab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                // Intent creation for View Activity
-                //Intent detailsIntent= new Intent(HomeActivity.this,ViewActivity.class);
-                //detailsIntent.putExtra("event", result);
-                //startActivity(detailsIntent);
-            }
-        });
-
-
     }
 
     //Temp method to populate the list of walks
@@ -96,5 +122,8 @@ public class HomeActivity extends AppCompatActivity {
         walkArrayList.add(walk7);
 
     }
+
+
+
 
 }
