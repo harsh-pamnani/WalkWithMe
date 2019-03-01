@@ -13,14 +13,14 @@ public class Walk {
     private String eventDescription;
     private String eventWeather;
 
-    public Walk(String name, String datetime, String location, String imgURL) {
+    public Walk(Integer id, String name, String datetime, String location, String imgURL) {
 
         this.eventName = name;
         this.eventDatetime = datetime;
         this.eventLocation = location;
         this.eventImageURL = imgURL;
 
-        this.eventId = 0;
+        this.eventId = id;
         this.eventCoordinateLang = 0.0f;
         this.eventCoordinateLong = 0.0f;
         this.eventDescription = "";
