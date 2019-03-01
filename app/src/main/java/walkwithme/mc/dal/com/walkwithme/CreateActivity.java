@@ -65,7 +65,6 @@ public class CreateActivity extends AppCompatActivity {
 
 
         final DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
-
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear,
                                   int dayOfMonth) {
@@ -75,11 +74,9 @@ public class CreateActivity extends AppCompatActivity {
                 myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
                 updateLabel(edittext, myCalendar);
             }
-
         };
 
         edittext.setOnClickListener(new View.OnClickListener() {
-
             @Override
             public void onClick(View v) {
                 // TODO Auto-generated method stub
@@ -92,7 +89,6 @@ public class CreateActivity extends AppCompatActivity {
         edittime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 TimePickerDialog timePickerDialog = new TimePickerDialog(CreateActivity.this, new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker timePicker, int hourOfDay, int minutes) {
@@ -101,16 +97,11 @@ public class CreateActivity extends AppCompatActivity {
                 }, 0, 0, false);
 
                 timePickerDialog.show();
-
             }
         });
-
-
     }
 
-
     private void SelectImage(){
-
         final CharSequence[] items={"Camera","Gallery", "Cancel"};
 
         AlertDialog.Builder builder = new AlertDialog.Builder(CreateActivity.this);
@@ -120,12 +111,9 @@ public class CreateActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 if (items[i].equals("Camera")) {
-
                     Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                     startActivityForResult(intent, REQUEST_CAMERA);
-
                 } else if (items[i].equals("Gallery")) {
-
                     Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                     intent.setType("image/*");
                     startActivityForResult(intent, SELECT_FILE);
@@ -136,18 +124,13 @@ public class CreateActivity extends AppCompatActivity {
             }
         });
         builder.show();
-
     }
 
-
-
-
     private void updateLabel(EditText edittext, Calendar myCalendar) {
-        String myFormat = "dd/mm/yyyy"; //In which you need put here
+        String myFormat = "dd/MMM/yyyy"; //In which you need put here
         SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
 
         edittext.setText(sdf.format(myCalendar.getTime()));
-
     }
 
 
@@ -156,24 +139,13 @@ public class CreateActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode,data);
 
         if(resultCode== Activity.RESULT_OK){
-
             if(requestCode==REQUEST_CAMERA){
-
-
                 Bitmap bmp = (Bitmap) data.getExtras().get("data");
                 ivImage.setImageBitmap(bmp);
-
             }else if(requestCode==SELECT_FILE){
-
                 Uri selectedImageUri = data.getData();
                 ivImage.setImageURI(selectedImageUri);
             }
-
         }
     }
-
-
-
-
-
 }
