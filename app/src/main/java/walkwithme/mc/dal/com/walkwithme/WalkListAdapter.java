@@ -32,7 +32,6 @@ public class WalkListAdapter extends ArrayAdapter<Walk> {
         TextView datetime;
         TextView location;
         ImageView image;
-
     }
 
 
@@ -85,7 +84,7 @@ public class WalkListAdapter extends ArrayAdapter<Walk> {
 
         int defaultImage = mContext.getResources().getIdentifier("@drawable/list_default_photo", null, mContext.getPackageName());
 
-        //if image doesnt exist or cant be loaded, use default image
+        //if image does not exist or cant be loaded, use default image
         DisplayImageOptions options = new DisplayImageOptions.Builder().cacheInMemory(true)
                 .cacheOnDisc(true).resetViewBeforeLoading(true)
                 .showImageForEmptyUri(defaultImage)
@@ -108,7 +107,6 @@ public class WalkListAdapter extends ArrayAdapter<Walk> {
     Author: https://www.stacktips.com/tutorials/android/universal-image-loader-library-in-android
      */
     private void setupImageLoader(){
-        // UNIVERSAL IMAGE LOADER SETUP
         DisplayImageOptions defaultOptions = new DisplayImageOptions.Builder()
                 .cacheOnDisc(true).cacheInMemory(true)
                 .imageScaleType(ImageScaleType.EXACTLY)
@@ -121,7 +119,6 @@ public class WalkListAdapter extends ArrayAdapter<Walk> {
                 .discCacheSize(100 * 1024 * 1024).build();
 
         ImageLoader.getInstance().init(config);
-        // END - UNIVERSAL IMAGE LOADER SETUP
     }
 
 }

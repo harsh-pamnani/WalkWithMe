@@ -8,8 +8,8 @@ public class Walk {
     private String eventImageURL;
     //Remaining elements for Create and View Activity
     private int eventId;
-    private String eventCoordinateLang;
-    private String eventCoordinateLong;
+    private Float eventCoordinateLang;
+    private Float eventCoordinateLong;
     private String eventDescription;
     private String eventWeather;
 
@@ -62,19 +62,19 @@ public class Walk {
         this.eventId = eventId;
     }
 
-    public String getEventCoordinateLang() {
+    public Float getEventCoordinateLang() {
         return eventCoordinateLang;
     }
 
-    public void setEventCoordinateLang(String eventCoordinateLang) {
+    public void setEventCoordinateLang(Float eventCoordinateLang) {
         this.eventCoordinateLang = eventCoordinateLang;
     }
 
-    public String getEventCoordinateLong() {
+    public Float getEventCoordinateLong() {
         return eventCoordinateLong;
     }
 
-    public void setEventCoordinateLong(String eventCoordinateLong) {
+    public void setEventCoordinateLong(Float eventCoordinateLong) {
         this.eventCoordinateLong = eventCoordinateLong;
     }
 
