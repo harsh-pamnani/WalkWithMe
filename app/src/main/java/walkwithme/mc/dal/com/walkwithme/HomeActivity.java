@@ -30,34 +30,27 @@ public class HomeActivity extends AppCompatActivity {
         addFab = findViewById(R.id.addFab);
 
 
-        Walk walk1 = new Walk("The Fats and the Furious","20-Apr-2019 2:00PM", "Citadel Hill Entrance");
-        Walk walk2 = new Walk("The Mean Elder Machine","19-Apr-2019 5:00AM", "Elder Home #2");
-        Walk walk3 = new Walk("Mommy Group","19-Aug-2019 3:00PM", "Happy Day Care");
-
-        Walk walk4 = new Walk("Mommy Group","19-Aug-2019 3:00PM", "Happy Day Care");
-        Walk walk5 = new Walk("Mommy Group","19-Aug-2019 3:00PM", "Happy Day Care");
-        Walk walk6 = new Walk("Mommy Group","19-Aug-2019 3:00PM", "Happy Day Care");
-        Walk walk7 = new Walk("Mommy Group","19-Aug-2019 3:00PM", "Happy Day Care");
-        Walk walk8 = new Walk("Mommy Group","19-Aug-2019 3:00PM", "Happy Day Care");
-        Walk walk9 = new Walk("Mommy Group","19-Aug-2019 3:00PM", "Happy Day Care");
-        Walk walk10 = new Walk("Mommy Group","19-Aug-2019 3:00PM", "Happy Day Care");
+        //Sample walks for testing
+        Walk walk1 = new Walk("The Fats and the Furious","20-Apr-2019 2:00PM", "Citadel Hill Entrance","https://hips.hearstapps.com/vader-prod.s3.amazonaws.com/1538172046-woman-walking-on-a-path-royalty-free-image-503818820-1538171480.jpg");
+        Walk walk2 = new Walk("The Mean Elder Machine","19-Apr-2019 5:00AM", "Elder Home #2","");
+        Walk walk3 = new Walk("Mommy Group","19-Apr-2019 3:00PM", "Happy Day Care","https://www.sbs.com.au/topics/sites/sbs.com.au.topics/files/styles/full/public/gettyimages-78616903.jpg?itok=vpRKMrOO&mtime=1502951087");
 
 
+
+        //array containing all walk items
         final ArrayList<Walk> walkArrayList = new ArrayList<>();
 
+        //adding test walks to the array list
         walkArrayList.add(walk1);
         walkArrayList.add(walk2);
         walkArrayList.add(walk3);
 
-        walkArrayList.add(walk4);
-        walkArrayList.add(walk5);
-        walkArrayList.add(walk6);
-        walkArrayList.add(walk7);
-        walkArrayList.add(walk8);
-        walkArrayList.add(walk9);
-        walkArrayList.add(walk10);
-
-
+        walkArrayList.add(walk1);
+        walkArrayList.add(walk2);
+        walkArrayList.add(walk3);
+        walkArrayList.add(walk1);
+        walkArrayList.add(walk2);
+        walkArrayList.add(walk3);
 
 
 
