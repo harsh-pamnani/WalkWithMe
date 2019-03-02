@@ -13,7 +13,7 @@ import java.io.Serializable;
 import walkwithme.mc.dal.com.walkwithme.ActivityJsonObj.ViewActivityJsonObj;
 
 public class HomeActivity extends AppCompatActivity {
-    // Sample View Avtivity JSON String
+    // Sample View Activity JSON String
     String result = "{\n" +
             "    \"eventName\": \"The Fats and the Furious\",\n" +
             "    \"image\": [\n" +
@@ -23,11 +23,11 @@ public class HomeActivity extends AppCompatActivity {
             "        \"image3\": \"image3\"\n" +
             "      }\n" +
             "    ],\n" +
-            "    \"location\": \"Citadel,Halifax\",\n" +
-            "    \"dateTime\": \"15-march-2019/8:30 AM\",\n" +
+            "    \"location\": \"Location: Citadel,Halifax\",\n" +
+            "    \"dateTime\": \"Date: 15-march-2019/8:30 AM\",\n" +
             "    \"coordinateLat\": \"-63.57\",\n" +
             "    \"coordinateLang\": \"44.64\",\n" +
-            "    \"description\": \"Oh no! Hopefully, some of that fury goes into your walking game.\"\n" +
+            "    \"description\": \"Description: \nHello. We are Dalhousie students. This is a walk with me event. People from any age groups are welcome to join the event. There are no pre-requisites to participate in the event.\"\n" +
             "  }";
 
     @Override
