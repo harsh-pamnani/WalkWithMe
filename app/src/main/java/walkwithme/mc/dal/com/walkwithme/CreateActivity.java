@@ -4,39 +4,48 @@ import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.ClipData;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 
 import android.widget.ImageView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 public class CreateActivity extends AppCompatActivity {
 
-    ImageView ivImage;
+    ImageView photoImageView;
     Integer REQUEST_CAMERA=1, SELECT_FILE=0;
 
     ArrayList<Bitmap> photoList = new ArrayList<Bitmap>();
+    EditText dateEditText;
+    EditText edittime;
+    EditText titleEditText;
+    AutoCompleteTextView venueAutoComplete;
+    Calendar myCalendar;
+    Button photoUploadButton;
+    Button submitButton;
 
     String TAG = "HP";
 
@@ -48,7 +57,17 @@ public class CreateActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create);
 
-        text=(AutoCompleteTextView)findViewById(R.id.autoCompleteTextView1);
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+
+        text = findViewById(R.id.autoCompleteTextView1);
+        titleEditText = findViewById(R.id.lblTitleEdit);
+        venueAutoComplete = findViewById(R.id.autoCompleteTextView1);
+        myCalendar = Calendar.getInstance();
+        dateEditText = findViewById(R.id.lblDateEdit);
+        edittime = findViewById(R.id.lblTimeEdit);
+        photoImageView = findViewById(R.id.lblUpload);
+        photoUploadButton = findViewById(R.id.lblUploadButton);
+        submitButton = findViewById(R.id.submitButton);
 
         ArrayAdapter adapter = new
                 ArrayAdapter(this,android.R.layout.simple_list_item_1, places);
@@ -56,19 +75,9 @@ public class CreateActivity extends AppCompatActivity {
         text.setAdapter(adapter);
         text.setThreshold(1);
 
-        final Calendar myCalendar = Calendar.getInstance();
-
-        final EditText edittext = (EditText) findViewById(R.id.lblDateEdit);
-        final EditText edittime = (EditText) findViewById(R.id.lblTimeEdit);
-
-        ivImage = (ImageView) findViewById(R.id.lblUpload);
-
-        Button fab = (Button) findViewById(R.id.lblUploadButton);
-
-        fab.setOnClickListener(new View.OnClickListener() {
+        photoUploadButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 SelectImage();
             }
         });
@@ -82,11 +91,11 @@ public class CreateActivity extends AppCompatActivity {
                 myCalendar.set(Calendar.YEAR, year);
                 myCalendar.set(Calendar.MONTH, monthOfYear);
                 myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-                updateLabel(edittext, myCalendar);
+                updateLabel(dateEditText, myCalendar);
             }
         };
 
-        edittext.setOnClickListener(new View.OnClickListener() {
+        dateEditText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // TODO Auto-generated method stub
@@ -154,7 +163,7 @@ public class CreateActivity extends AppCompatActivity {
             if(requestCode==REQUEST_CAMERA){
                 Bitmap bmp = (Bitmap) data.getExtras().get("data");
                 photoList.add(bmp);
-                ivImage.setImageBitmap(photoList.get(0));
+                photoImageView.setImageBitmap(photoList.get(0));
             }else if(requestCode==SELECT_FILE){
                 ClipData clipData = data.getClipData();
 
@@ -163,7 +172,7 @@ public class CreateActivity extends AppCompatActivity {
                 selectedImageUri = clipData.getItemAt(0).getUri();
                 //}
 
-                ivImage.setImageURI(selectedImageUri);
+                photoImageView.setImageURI(selectedImageUri);
                 Log.i(TAG, "8");
             }
         }
