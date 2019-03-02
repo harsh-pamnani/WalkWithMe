@@ -23,11 +23,11 @@ public class HomeActivity extends AppCompatActivity {
             "        \"image3\": \"image3\"\n" +
             "      }\n" +
             "    ],\n" +
-            "    \"location\": \"Location: Citadel,Halifax\",\n" +
+            "    \"location\": \"Location: Citadel, Halifax\",\n" +
             "    \"dateTime\": \"Date: 15-march-2019/8:30 AM\",\n" +
             "    \"coordinateLat\": \"-63.57\",\n" +
             "    \"coordinateLang\": \"44.64\",\n" +
-            "    \"description\": \"Description: \nHello. We are Dalhousie students. This is a walk with me event. People from any age groups are welcome to join the event. There are no pre-requisites to participate in the event.\"\n" +
+            "    \"description\": \"Description: \nHello. We are students from Dalhousie University. This is a walk with me event. People from any age groups are welcome to join the event. There are no pre-requisites to participate in the event.\"\n" +
             "  }";
 
     @Override
