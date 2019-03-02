@@ -3,14 +3,19 @@ package walkwithme.mc.dal.com.walkwithme;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.ClipData;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
@@ -19,6 +24,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
 
@@ -29,6 +35,10 @@ public class CreateActivity extends AppCompatActivity {
 
     ImageView ivImage;
     Integer REQUEST_CAMERA=1, SELECT_FILE=0;
+
+    ArrayList<Bitmap> photoList = new ArrayList<Bitmap>();
+
+    String TAG = "HP";
 
     AutoCompleteTextView text;
     String[] places ={"Dalhousie ","SMU","Duncan Street","Park Victoria","Robbie Street","Cunnard Street"};
@@ -116,6 +126,8 @@ public class CreateActivity extends AppCompatActivity {
                 } else if (items[i].equals("Gallery")) {
                     Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                     intent.setType("image/*");
+                    intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+                    intent.setAction(Intent.ACTION_GET_CONTENT);
                     startActivityForResult(intent, SELECT_FILE);
 
                 } else if (items[i].equals("Cancel")) {
@@ -141,10 +153,18 @@ public class CreateActivity extends AppCompatActivity {
         if(resultCode== Activity.RESULT_OK){
             if(requestCode==REQUEST_CAMERA){
                 Bitmap bmp = (Bitmap) data.getExtras().get("data");
-                ivImage.setImageBitmap(bmp);
+                photoList.add(bmp);
+                ivImage.setImageBitmap(photoList.get(0));
             }else if(requestCode==SELECT_FILE){
-                Uri selectedImageUri = data.getData();
+                ClipData clipData = data.getClipData();
+
+                Uri selectedImageUri;
+                //for (int i = 0; i < clipData.getItemCount(); i++) {
+                selectedImageUri = clipData.getItemAt(0).getUri();
+                //}
+
                 ivImage.setImageURI(selectedImageUri);
+                Log.i(TAG, "8");
             }
         }
     }
