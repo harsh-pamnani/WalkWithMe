@@ -118,6 +118,30 @@ public class CreateActivity extends AppCompatActivity {
                 timePickerDialog.show();
             }
         });
+
+        submitButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                //Intent myIntent = new Intent(view.getContext(), agones.class);
+                //startActivityForResult(myIntent, 0);
+
+
+                AlertDialog alertDialog = new AlertDialog.Builder(CreateActivity.this).create(); //Read Update
+                alertDialog.setTitle("Event Submitted.");
+                alertDialog.setMessage("Your event has been submitted successfully. \n\nGo back to home page.");
+
+                alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL,"OK!", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Enter code to go back to home screen..!!
+                        dialog.dismiss();
+                    }
+                });
+
+
+
+                alertDialog.show();  //<-- See This!
+            }
+
+        });
     }
 
     private void SelectImage(){
