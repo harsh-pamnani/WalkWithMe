@@ -5,9 +5,18 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ViewActivity">
+
+    <!--Code to add a custom toolbar-->
+   <!--<include android:id="@+id/custom_toolbar"-->
+        <!--layout="@layout/custom_toolbar"-->
+        <!--android:elevation="3dp"-->
+    <!--/>-->
+
     <ScrollView
+
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
