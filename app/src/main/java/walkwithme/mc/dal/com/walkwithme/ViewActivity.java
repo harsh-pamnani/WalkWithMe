@@ -34,9 +34,10 @@ public class ViewActivity extends AppCompatActivity implements OnMapReadyCallbac
     TextView location;
     TextView date;
     TextView description;
+    TextView eventName;
 
     //Fetching Images from the Drawable directory
-    int[] sampleImages = {R.drawable.form, R.drawable.page1, R.drawable.page2, R.drawable.page3};
+    int[] sampleImages = {R.drawable.walk_1, R.drawable.walk_2, R.drawable.walk_3, R.drawable.walk_4};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,12 +62,14 @@ public class ViewActivity extends AppCompatActivity implements OnMapReadyCallbac
         location = (TextView) findViewById(R.id.location);
         date = (TextView) findViewById(R.id.date);
         description = (TextView) findViewById(R.id.description);
+        eventName = (TextView) findViewById(R.id.eventName);
 
         try {
             // Setting the JSON data in the Activity
             location.setText(event.get("location").toString());
             date.setText(event.get("dateTime").toString());
             description.setText(event.get("description").toString());
+            eventName.setText(event.get("eventName").toString());
 
         } catch (JSONException e) {
             e.printStackTrace();

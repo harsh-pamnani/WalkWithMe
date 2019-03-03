@@ -15,7 +15,7 @@ import walkwithme.mc.dal.com.walkwithme.ActivityJsonObj.ViewActivityJsonObj;
 public class HomeActivity extends AppCompatActivity {
     // Sample View Activity JSON String
     String result = "{\n" +
-            "    \"eventName\": \"The Fats and the Furious\",\n" +
+            "    \"eventName\": \"Game of Thrones Fan Walk\",\n" +
             "    \"image\": [\n" +
             "      {\n" +
             "        \"image1\": \"image1\",\n" +
