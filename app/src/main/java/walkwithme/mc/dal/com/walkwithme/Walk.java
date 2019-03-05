@@ -1,5 +1,7 @@
 package walkwithme.mc.dal.com.walkwithme;
 
+import android.location.Location;
+
 public class Walk {
     //Elements used for the Home Screen
     private String eventName;
@@ -8,12 +10,14 @@ public class Walk {
     private String eventImageURL;
     //Remaining elements for Create and View Activity
     private int eventId;
-    private Double eventCoordinateLang;
+    private Double eventCoordinateLat;
     private Double eventCoordinateLong;
     private String eventDescription;
     private String eventWeather;
 
-    public Walk(Integer id, String name, String datetime, String location, String imgURL) {
+    private Float distanceToUser; //distance in km
+
+    public Walk(double userLatitude, double userLongitude, double latitude, double longitude, Integer id, String name, String datetime, String location, String imgURL) {
 
         this.eventName = name;
         this.eventDatetime = datetime;
@@ -21,10 +25,32 @@ public class Walk {
         this.eventImageURL = imgURL;
 
         this.eventId = id;
-        this.eventCoordinateLang = 0.0;
-        this.eventCoordinateLong = 0.0;
+        this.eventCoordinateLat = latitude;
+        this.eventCoordinateLong = longitude;
         this.eventDescription = "";
         this.eventWeather = "";
+
+        this.distanceToUser = calculateDistance(userLatitude, userLongitude, latitude, longitude);
+
+    }
+
+    private Float calculateDistance(double userLatitude, double userLongitude, double walkLatitude, double walkLongitude) {
+
+        Location userLocation = new Location("user");
+        Location walkLocation = new Location("walk");
+
+        userLocation.setLatitude(userLatitude);
+        userLocation.setLongitude(userLongitude);
+
+        walkLocation.setLatitude(walkLatitude);
+        walkLocation.setLongitude(walkLongitude);
+
+        float distance = userLocation.distanceTo(walkLocation);
+
+        //convert meters to kilometers
+        distance = distance / 1000;
+
+        return distance;
 
     }
 
@@ -68,12 +94,12 @@ public class Walk {
         this.eventId = eventId;
     }
 
-    public Double getEventCoordinateLang() {
-        return eventCoordinateLang;
+    public Double getEventCoordinateLat() {
+        return eventCoordinateLat;
     }
 
-    public void setEventCoordinateLang(Double eventCoordinateLang) {
-        this.eventCoordinateLang = eventCoordinateLang;
+    public void setEventCoordinateLat(Double eventCoordinateLat) {
+        this.eventCoordinateLat = eventCoordinateLat;
     }
 
     public Double getEventCoordinateLong() {
@@ -98,6 +124,14 @@ public class Walk {
 
     public void setEventWeather(String eventWeather) {
         this.eventWeather = eventWeather;
+    }
+
+    public Float getDistanceToUser() {
+        return distanceToUser;
+    }
+
+    public void setDistanceToUser(Float distanceToUser) {
+        this.distanceToUser = distanceToUser;
     }
 }
 
