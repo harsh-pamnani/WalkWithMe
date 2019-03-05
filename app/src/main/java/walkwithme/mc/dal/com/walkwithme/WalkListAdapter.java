@@ -59,7 +59,7 @@ public class WalkListAdapter extends ArrayAdapter<Walk> {
         //create a ViewHolder object
         ViewHolder viewholder;
 
-        //ensure that not all values are loaded into the
+        //if the convertView is empty (old view to be reused), then populate it and set an ID
         if(convertView == null){
 
             LayoutInflater inflater = LayoutInflater.from(mContext);
@@ -72,8 +72,10 @@ public class WalkListAdapter extends ArrayAdapter<Walk> {
             viewholder.location= (TextView) convertView.findViewById(R.id.walkLocation);
             viewholder.image = (ImageView) convertView.findViewById(R.id.imageView);
 
+            //assign a tag for the viewholder
             convertView.setTag(viewholder);
 
+        //if is not null, retrieve the viewholder using the tag
         }else{
 
             viewholder = (ViewHolder) convertView.getTag();
@@ -82,6 +84,7 @@ public class WalkListAdapter extends ArrayAdapter<Walk> {
         //create instance of image loader
         ImageLoader imageLoader = ImageLoader.getInstance();
 
+        //get the default image from the drawables
         int defaultImage = mContext.getResources().getIdentifier("@drawable/list_default_photo", null, mContext.getPackageName());
 
         //if image does not exist or cant be loaded, use default image

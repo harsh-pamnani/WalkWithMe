@@ -4,7 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 
-public class ViewActivityTemp extends AppCompatActivity {
+public class ViewActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -20,11 +20,10 @@ public class ViewActivityTemp extends AppCompatActivity {
         String eventDatetime = dataBundle.getString("eventDatetime", "N/A");
         String eventLocation = dataBundle.getString("eventLocation", "N/A");
         String eventImageURL = dataBundle.getString("eventImageURL", "N/A");
-        Float eventCoordinateLang = dataBundle.getFloat("eventCoordinateLang", 0.0f);
-        Float eventCoordinateLong = dataBundle.getFloat("eventCoordinateLong", 0.0f);
+        Double eventCoordinateLang = dataBundle.getDouble("eventCoordinateLang", 0.0);
+        Double eventCoordinateLong = dataBundle.getDouble("eventCoordinateLong", 0.0);
         String eventDescription = dataBundle.getString("eventDescription", "N/A");
         String eventWeather = dataBundle.getString("eventWeather", "N/A");
-        
     }
 
 

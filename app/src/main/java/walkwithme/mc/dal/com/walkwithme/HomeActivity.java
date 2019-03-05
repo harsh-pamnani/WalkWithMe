@@ -1,6 +1,5 @@
 package walkwithme.mc.dal.com.walkwithme;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -8,13 +7,10 @@ import android.os.Bundle;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.view.View;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
 public class HomeActivity extends AppCompatActivity {
-
-    private Activity mActivty;
 
     ListView walkList;
     FloatingActionButton addFab;
@@ -25,7 +21,6 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        mActivty = this;
         walkList = findViewById(R.id.list_walks);
         addFab =   findViewById(R.id.addFab);
 
@@ -34,9 +29,8 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int i, long id) {
 
-                //Toast.makeText(HomeActivity.this, "clicked item: " + i + " "+ walkArrayList.get(i).toString(), Toast.LENGTH_LONG).show();
-
-                Intent viewIntent= new Intent(HomeActivity.this, ViewActivityTemp.class);
+                //create intent and bundle for View Activity
+                Intent viewIntent= new Intent(HomeActivity.this, ViewActivity.class);
                 Bundle viewBundle = new Bundle();
 
                 //put the rest into a bundle so that we can use default values if required
@@ -45,8 +39,8 @@ public class HomeActivity extends AppCompatActivity {
                 viewBundle.putString("eventDatetime", walkArrayList.get(i).getEventDatetime());
                 viewBundle.putString("eventLocation", walkArrayList.get(i).getEventLocation());
                 viewBundle.putString("eventImageURL", walkArrayList.get(i).getEventImageURL());
-                viewBundle.putFloat("eventCoordinateLang", walkArrayList.get(i).getEventCoordinateLang());
-                viewBundle.putFloat("eventCoordinateLong", walkArrayList.get(i).getEventCoordinateLong());
+                viewBundle.putDouble("eventCoordinateLang", walkArrayList.get(i).getEventCoordinateLang());
+                viewBundle.putDouble("eventCoordinateLong", walkArrayList.get(i).getEventCoordinateLong());
                 viewBundle.putString("eventDescription", walkArrayList.get(i).getEventDescription());
                 viewBundle.putString("eventWeather", walkArrayList.get(i).getEventWeather());
 
@@ -65,8 +59,8 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                // Intent creation for View Activity
-                Intent createIntent= new Intent(HomeActivity.this, CreateActivityTemp.class);
+                // Intent creation for CREATE Activity
+                Intent createIntent= new Intent(HomeActivity.this, CreateActivity.class);
                 startActivity(createIntent);
             }
         });
@@ -76,8 +70,8 @@ public class HomeActivity extends AppCompatActivity {
 
 
     @Override
-    protected void onStart() {
-        super.onStart();
+    protected void onResume() {
+        super.onResume();
 
         //array containing all walk items
         walkArrayList = new ArrayList<>();
@@ -86,8 +80,7 @@ public class HomeActivity extends AppCompatActivity {
         retrieveData();
 
         //sort walks
-
-
+        //method sortData()
 
         //create Adapter instance
         WalkListAdapter walkListAdapter = new WalkListAdapter(this, R.layout.listview_item, walkArrayList);
@@ -96,7 +89,10 @@ public class HomeActivity extends AppCompatActivity {
         walkList.setAdapter(walkListAdapter);
     }
 
-    //Temp method to populate the list of walks
+    /**
+     * Method to populate the list of walks
+     * Currently it is updated manually, future work requires it to be drawn from database
+     */
     private void retrieveData() {
 
         //Sample walks for testing
@@ -117,6 +113,14 @@ public class HomeActivity extends AppCompatActivity {
         walkArrayList.add(walk5);
         walkArrayList.add(walk6);
         walkArrayList.add(walk7);
+
+    }
+
+    /**
+     * Method that sortes the walkArrayList using the GPS coordinates
+     */
+    private void sortData(){
+
 
     }
 

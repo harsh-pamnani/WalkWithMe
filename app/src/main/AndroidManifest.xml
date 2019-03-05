@@ -18,8 +18,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".CreateActivityTemp"></activity>
-        <activity android:name=".ViewActivityTemp"></activity>
+        <activity android:name=".CreateActivity"></activity>
+        <activity android:name=".ViewActivity"></activity>
     </application>
 
 </manifest>
