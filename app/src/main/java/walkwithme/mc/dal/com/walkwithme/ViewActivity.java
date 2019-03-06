@@ -2,6 +2,7 @@ package walkwithme.mc.dal.com.walkwithme;
 
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.ImageView;
@@ -26,8 +27,10 @@ public class ViewActivity extends AppCompatActivity implements OnMapReadyCallbac
     //Map Variable
     private GoogleMap mMap;
 
-    //Initializing JSON Object
-    JSONObject event = null;
+    Double eventCoordinateLang = 0.0;
+    Double eventCoordinateLong = 0.0;
+
+    LatLng eventLoc = null;
 
     //Initializing views
     CarouselView carouselView;
@@ -39,7 +42,7 @@ public class ViewActivity extends AppCompatActivity implements OnMapReadyCallbac
     int[] sampleImages = {R.drawable.form, R.drawable.page1, R.drawable.page2, R.drawable.page3};
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view);
 
@@ -51,32 +54,38 @@ public class ViewActivity extends AppCompatActivity implements OnMapReadyCallbac
         // Intent object passed from Home Activity
         Intent intent = getIntent();
 
-        //Creating viewActivityJsonObj class object to parse the string to JSON Object
-        ViewActivityJsonObj viewActivityJsonObj = new ViewActivityJsonObj();
-
         //Fetching the resources passed in the  Intent from Home Activity
-        event = viewActivityJsonObj.saveData(intent.getStringExtra("event"));
+        //event = viewActivityJsonObj.saveData(intent.getStringExtra("event"));
+        //pull data from the intent/bundle
+        Bundle dataBundle = getIntent().getBundleExtra("bundle");
+
+        //pull data from the bundle which allows for default values.
+        final Integer eventId = dataBundle.getInt("eventID",-1);
+        String eventName = dataBundle.getString("eventName", "N/A");
+        String eventDatetime = dataBundle.getString("eventDatetime", "N/A");
+        String eventLocation = dataBundle.getString("eventLocation", "N/A");
+        String eventImageURL = dataBundle.getString("eventImageURL", "N/A");
+        Double eventCoordinateLang = dataBundle.getDouble("eventCoordinateLang", 0.0);
+        Double eventCoordinateLong = dataBundle.getDouble("eventCoordinateLong", 0.0);
+        String eventDescription = dataBundle.getString("eventDescription", "N/A");
+        String eventWeather = dataBundle.getString("eventWeather", "N/A");
 
         //Fetching required data from JSON Object
         location = (TextView) findViewById(R.id.location);
         date = (TextView) findViewById(R.id.date);
         description = (TextView) findViewById(R.id.description);
-
-        try {
-            // Setting the JSON data in the Activity
-            location.setText(event.get("location").toString());
-            date.setText(event.get("dateTime").toString());
-            description.setText(event.get("description").toString());
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
+        // Setting the JSON data in the Activity
+        location.setText(eventLocation);
+        date.setText(eventDatetime);
+        description.setText(eventDescription);
 
         //Creating the carousel View for the event images
         carouselView = (CarouselView) findViewById(R.id.carousel_view);
         carouselView.setPageCount(sampleImages.length);
         carouselView.setImageListener(imageListener);
+
+        // Setting the location coordinates in google Map
+        eventLoc = new LatLng(eventCoordinateLang, eventCoordinateLong);
     }
 
     // Code to swipe the images in the carousel
@@ -93,17 +102,15 @@ public class ViewActivity extends AppCompatActivity implements OnMapReadyCallbac
         mMap = googleMap;
 
         // Add a marker at the Event Location
-        LatLng eventLoc = null;
-        try {
+
+
             // Setting the location coordinates in google Map
-            eventLoc = new LatLng(Double.valueOf(event.get("coordinateLang").toString()), Double.valueOf(event.get("coordinateLat").toString()));
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+            eventLoc = new LatLng(eventCoordinateLang, eventCoordinateLong);
+
         // Adding Marker text in Google Map
         mMap.addMarker(new MarkerOptions().position(eventLoc).title("Your Meeting LOcation"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(eventLoc));
 
     }
-
 }
+

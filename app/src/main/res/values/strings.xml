@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">WalkWithMe</string>
     <string name="google_maps_key">AIzaSyASvOV-xAPAml7RN-R4vLvttHs2t6-AziU</string>
+    <string name="home_title">Home View</string>
 </resources>
