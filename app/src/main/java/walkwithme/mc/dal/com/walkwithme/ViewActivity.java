@@ -104,8 +104,8 @@ public class ViewActivity extends AppCompatActivity implements OnMapReadyCallbac
         // Add a marker at the Event Location
 
 
-            // Setting the location coordinates in google Map
-            eventLoc = new LatLng(eventCoordinateLang, eventCoordinateLong);
+        // Setting the location coordinates in google Map
+        eventLoc = new LatLng(eventCoordinateLang, eventCoordinateLong);
 
         // Adding Marker text in Google Map
         mMap.addMarker(new MarkerOptions().position(eventLoc).title("Your Meeting LOcation"));
