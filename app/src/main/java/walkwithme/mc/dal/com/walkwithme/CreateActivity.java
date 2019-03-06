@@ -95,6 +95,17 @@ public class CreateActivity extends AppCompatActivity {
             }
         };
 
+        titleEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(!hasFocus) {
+                    if (titleEditText.getText().length() < 10) {
+                        titleEditText.setError("Title can not be less than 10 characters");
+                    }
+                }
+            }
+        });
+
         dateEditText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -120,27 +131,29 @@ public class CreateActivity extends AppCompatActivity {
         });
 
         submitButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View view) {
-                //Intent myIntent = new Intent(view.getContext(), agones.class);
-                //startActivityForResult(myIntent, 0);
+            @Override
+            public void onClick(View v) {
+                CharSequence titleError = titleEditText.getError();
 
+                if(titleError==null) {
+                    AlertDialog alertDialog = new AlertDialog.Builder(CreateActivity.this).create(); //Read Update
+                    alertDialog.setTitle("Event Submitted.");
+                    alertDialog.setMessage("Your event has been submitted successfully. \n\nGo back to home page.");
 
-                AlertDialog alertDialog = new AlertDialog.Builder(CreateActivity.this).create(); //Read Update
-                alertDialog.setTitle("Event Submitted..!!");
-                alertDialog.setMessage("Your event has been submitted successfully. \n\nGo back to home page.");
+                    alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK!",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    // Go to home screen
+                                    dialog.dismiss();
+                                }
+                            });
 
-                alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL,"OK!", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        // Enter code to go back to home screen..!!
-                        dialog.dismiss();
-                    }
-                });
-
-
-
-                alertDialog.show();  //<-- See This!
+                    alertDialog.show();  //<-- See This!
+                } else {
+                    Toast toast = Toast.makeText(getApplicationContext(), "Rectify the errors", Toast.LENGTH_SHORT);;
+                    toast.show();
+                }
             }
-
         });
     }
 
