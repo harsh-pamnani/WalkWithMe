@@ -50,7 +50,7 @@ public class CreateActivity extends AppCompatActivity {
     String TAG = "HP";
 
     AutoCompleteTextView text;
-    String[] places ={"Dalhousie ","SMU","Duncan Street","Park Victoria","Robbie Street","Cunnard Street"};
+    String[] places ={"Dalhousie ","SMU","Duncan Street","Park Victoria","Robbie Street","Cunnard Street","Downtown","Walmart","HSC","Spring Garden"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -126,7 +126,7 @@ public class CreateActivity extends AppCompatActivity {
 
 
                 AlertDialog alertDialog = new AlertDialog.Builder(CreateActivity.this).create(); //Read Update
-                alertDialog.setTitle("Event Submitted.");
+                alertDialog.setTitle("Event Submitted..!!");
                 alertDialog.setMessage("Your event has been submitted successfully. \n\nGo back to home page.");
 
                 alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL,"OK!", new DialogInterface.OnClickListener() {
