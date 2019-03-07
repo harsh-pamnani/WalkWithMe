@@ -27,8 +27,8 @@ public class ViewActivity extends AppCompatActivity implements OnMapReadyCallbac
     //Map Variable
     private GoogleMap mMap;
 
-    Double eventCoordinateLang = 0.0;
-    Double eventCoordinateLong = 0.0;
+    Double eventCoordinateLang = 44.637386;
+    Double eventCoordinateLong = -63.587347;
 
     LatLng eventLoc = null;
 
@@ -37,9 +37,10 @@ public class ViewActivity extends AppCompatActivity implements OnMapReadyCallbac
     TextView location;
     TextView date;
     TextView description;
+    TextView eventNameView;
 
     //Fetching Images from the Drawable directory
-    int[] sampleImages = {R.drawable.form, R.drawable.page1, R.drawable.page2, R.drawable.page3};
+    int[] sampleImages = {R.drawable.walk_2, R.drawable.walk_1, R.drawable.walk_3, R.drawable.walk_4};
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -74,10 +75,12 @@ public class ViewActivity extends AppCompatActivity implements OnMapReadyCallbac
         location = (TextView) findViewById(R.id.location);
         date = (TextView) findViewById(R.id.date);
         description = (TextView) findViewById(R.id.description);
+        eventNameView = (TextView) findViewById(R.id.eventNameView);
         // Setting the JSON data in the Activity
         location.setText(eventLocation);
         date.setText(eventDatetime);
         description.setText(eventDescription);
+        eventNameView.setText(eventName);
 
         //Creating the carousel View for the event images
         carouselView = (CarouselView) findViewById(R.id.carousel_view);
