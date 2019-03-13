@@ -27,8 +27,8 @@ public class Walk {
         this.eventId = id;
         this.eventCoordinateLat = latitude;
         this.eventCoordinateLong = longitude;
-        this.eventDescription = "";
-        this.eventWeather = "";
+        this.eventDescription = "This is the description";
+        this.eventWeather = "this is the weather details";
 
         this.distanceToUser = calculateDistance(userLatitude, userLongitude, latitude, longitude);
 

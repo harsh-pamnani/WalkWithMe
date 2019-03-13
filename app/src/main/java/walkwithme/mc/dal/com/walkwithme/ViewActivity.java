@@ -111,7 +111,7 @@ public class ViewActivity extends AppCompatActivity implements OnMapReadyCallbac
         eventLoc = new LatLng(eventCoordinateLang, eventCoordinateLong);
 
         // Adding Marker text in Google Map
-        mMap.addMarker(new MarkerOptions().position(eventLoc).title("Your Meeting LOcation"));
+        mMap.addMarker(new MarkerOptions().position(eventLoc).title("Your Meeting Location"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(eventLoc));
 
     }
