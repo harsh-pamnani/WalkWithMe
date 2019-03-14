@@ -14,6 +14,7 @@ import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
@@ -34,7 +35,16 @@ import android.widget.ImageView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.UUID;
+
 public class CreateActivity extends AppCompatActivity {
+
+    FirebaseDatabase firebaseDatabase;
+    DatabaseReference fireBaseAuth;
 
     ImageView photoImageView;
     Integer REQUEST_CAMERA=1, SELECT_FILE=0;
@@ -55,6 +65,13 @@ public class CreateActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+
+        //FirebaseApp.initializeApp(CreateActivity.this);
+        // Creating the instance of firebase Database
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        fireBaseAuth = firebaseDatabase.getReference("WALK_DATA");
+
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create);
 
@@ -136,7 +153,10 @@ public class CreateActivity extends AppCompatActivity {
             public void onClick(View v) {
                 CharSequence titleError = titleEditText.getError();
 
-                if(titleError==null) {
+                //function call to store values in the database
+                prepareFormDataforFirebase();
+
+                    if(titleError==null) {
                     AlertDialog alertDialog = new AlertDialog.Builder(CreateActivity.this).create(); //Read Update
                     alertDialog.setTitle("Event Submitted.");
                     alertDialog.setMessage("Your event has been submitted successfully. \n\nGo back to home page.");
@@ -214,5 +234,12 @@ public class CreateActivity extends AppCompatActivity {
                 Log.i(TAG, "8");
             }
         }
+    }
+
+
+    private void prepareFormDataforFirebase(){
+        CreateActivityForm crtFrm = new CreateActivityForm(titleEditText.getText().toString());
+        fireBaseAuth.push().setValue(crtFrm);
+
     }
 }

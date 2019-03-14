@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "971669237797",
+    "firebase_url": "https://walk-8dfad.firebaseio.com",
+    "project_id": "walk-8dfad",
+    "storage_bucket": "walk-8dfad.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:971669237797:android:5db58594522af231",
+        "android_client_info": {
+          "package_name": "walkwithme.mc.dal.com.walkwithme"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "971669237797-8boqig8ik48h6n74frohd2laatajpnc0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBRe6Zmi9IZuMWpxUWabMLXBjmBSz2pU6k"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
