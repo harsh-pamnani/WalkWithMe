@@ -22,22 +22,19 @@ import java.util.Comparator;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 
 public class HomeActivity extends AppCompatActivity {
 
-
-
     public static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 9003;
-
     private static final String TAG = "MainActivity";
 
     private FusedLocationProviderClient mFusedLocationClient;
     private boolean mLocationPermissionGranted = false;
+    private boolean firstOnStart = true;
 
-    Double currentLatitude = 44.647398;        //Citadel Hill as default
+    //default location is Citadel Hill, Halifax, NS
+    Double currentLatitude = 44.647398;
     Double currentLongitude  = -63.580364;
 
     ListView walkList;
@@ -100,7 +97,6 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
-
     }
 
 
@@ -110,17 +106,26 @@ public class HomeActivity extends AppCompatActivity {
 
         Log.d(TAG, "onStart: entered (GPS)");
 
-        //if Location permission has been granted, go get the coordinates
-        if(mLocationPermissionGranted){
-            Log.d(TAG, "onStart: permission granted");
-            getLastLocation();
+        //if on first onStart, wait for permission request to make decision
+        if(firstOnStart){
+            firstOnStart = false;
 
-        //else display the list without getting location
-        }else{
-            Log.d(TAG, "onStart: permission false");
-            displayList(false);
+
+        //else on the next onStarts,
+        }else {
+
+            //if Location permission has been granted, go get the coordinates
+            if (mLocationPermissionGranted) {
+                Log.d(TAG, "onStart: permission granted");
+                getLastLocation();
+
+            //else display the list without getting location
+            } else {
+                Log.d(TAG, "onStart: permission false");
+                displayList(false);
+            }
+
         }
-
     }
 
 
@@ -150,15 +155,14 @@ public class HomeActivity extends AppCompatActivity {
         }else{
 
             mLocationPermissionGranted = true;
+
+            getLastLocation();
         }
 
     }
 
     /**
      * https://developer.android.com/training/permissions/requesting.html
-     * @param requestCode
-     * @param permissions
-     * @param grantResults
      */
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults) {
@@ -176,13 +180,17 @@ public class HomeActivity extends AppCompatActivity {
                     // contacts-related task you need to do.
                     Log.d(TAG, "onRequestPermissionsResult: Granted!");
 
-                //else if the request has been denied
+                    getLastLocation();
+
+                    //else if the request has been denied
                 }else{
 
                      mLocationPermissionGranted = false;
                     // permission denied, boo! Disable the
                     // functionality that depends on this permission.
                     Log.d(TAG, "onRequestPermissionsResult: Denied!");
+
+                    displayList(false);
                 }
             }
         }
@@ -300,12 +308,6 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
     }
-
-
-    /**
-     * https://developer.android.com/training/location/receive-location-updates.html
-     * https://developers.google.com/android/reference/com/google/android/gms/location/LocationRequest
-     */
 
 
 }
