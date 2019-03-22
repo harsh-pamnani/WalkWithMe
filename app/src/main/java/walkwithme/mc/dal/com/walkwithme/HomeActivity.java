@@ -1,10 +1,6 @@
 package walkwithme.mc.dal.com.walkwithme;
 
 import android.Manifest;
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.support.design.widget.FloatingActionButton;
@@ -15,32 +11,26 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.view.View;
 import android.location.Location;
-import android.location.LocationManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
 public class HomeActivity extends AppCompatActivity {
 
-    private static final int ERROR_DIALOG_REQUEST = 9001;
-    private static final int PERMISSIONS_REQUEST_ENABLE_GPS = 9002;
-    private static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 9003;
+
     private static final String TAG = "MainActivity";
 
     private FusedLocationProviderClient mFusedLocationClient;
-    private boolean mLocationPermissionGranted = false;
 
     Double currentLatitude = 44.647398;        //Citadel Hill as default
     Double currentLongitude  = -63.580364;
@@ -56,17 +46,6 @@ public class HomeActivity extends AppCompatActivity {
 
         //instantiate the location provider client
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
-
-        //when starting, first get the GPS location and permission
-        if( isServicesOK() && isGPSEnabled() ) {
-
-            if (mLocationPermissionGranted) {
-                getLastKnownLocation();
-
-            } else {
-                getLocationPermission();
-            }
-        }
 
         walkList = findViewById(R.id.list_walks);
         addFab =   findViewById(R.id.addFab);
@@ -116,29 +95,32 @@ public class HomeActivity extends AppCompatActivity {
     }
 
 
-    @Override
-    protected void onResume() {
-        super.onResume();
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        Log.d(TAG, "onStart: entered (GPS)");
+
+        //get gps location and depending on results display list
+        getLocation();
+    }
+
+
+    private void displayList(boolean gpsReceived){
+
+        Log.d(TAG, "displayList: entered gps: " + gpsReceived);
+        
         //array containing all walk items
         walkArrayList = new ArrayList<>();
 
-        //checks if both Google Maps services and GPS status are enabled
-        if( isServicesOK() && isGPSEnabled() ) {
-
-            if (mLocationPermissionGranted) {
-                getLastKnownLocation();
-
-            } else {
-                getLocationPermission();
-            }
-        }
-
-        //Method to populate array
+        //populate array
         retrieveData();
 
-        //sort walks
-        sortData();
+        //if the gps is available sort by distance to user
+        if(gpsReceived) {
+            sortWalksByDistance();
+        }
 
         //create Adapter instance
         WalkListAdapter walkListAdapter = new WalkListAdapter(this, R.layout.listview_item, walkArrayList);
@@ -146,6 +128,7 @@ public class HomeActivity extends AppCompatActivity {
         //apply the adapter to the walk ArrayList
         walkList.setAdapter(walkListAdapter);
     }
+
 
     /**
      * Method to populate the list of walks
@@ -189,7 +172,7 @@ public class HomeActivity extends AppCompatActivity {
      * Method that sorts the walkArrayList based on distance to user calculated value.
      * Value is calculated in the Walk class constructor given user and location coordinates.
      */
-    private void sortData(){
+    private void sortWalksByDistance(){
 
         Collections.sort(walkArrayList, new Comparator<Walk>() {
             @Override
@@ -199,173 +182,60 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
-
-    }
-
-
-    /*
-     * ************ GPS METHODS **************
-     */
-
-    /**
-     * Build and display an alert dialog that prompts the user to enable GPS
-     */
-    private void buildAlertMessageNoGps() {
-
-        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-
-        builder.setMessage("This application requires GPS, do you want to enable it?")
-                .setCancelable(false)
-                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                    public void onClick(@SuppressWarnings("unused") final DialogInterface dialog, @SuppressWarnings("unused") final int id) {
-                        Intent enableGpsIntent = new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                        startActivityForResult(enableGpsIntent, PERMISSIONS_REQUEST_ENABLE_GPS);
-                    }
-                });
-
-        final AlertDialog alert = builder.create();
-        alert.show();
-    }
-
-    /**
-     * Check if GPS services re enabled.
-     * @return false if disabled; otherwise returns true
-     */
-    public boolean isGPSEnabled(){
-
-        final LocationManager manager = (LocationManager) getSystemService( Context.LOCATION_SERVICE );
-
-        //can also check NETWORK_PROVIDER instead if GPS is too weak
-        if ( !manager.isProviderEnabled( LocationManager.GPS_PROVIDER ) ) {
-
-            //prompt the user to enable gps
-            buildAlertMessageNoGps();
-            return false;
-        }
-        return true;
-    }
-
-    /**
-     * Request location permission to get location from the device.
-     * Permission request is handled by onRequestPermissionResults
-     */
-    private void getLocationPermission() {
-
-        if (ContextCompat.checkSelfPermission(this.getApplicationContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-
-            mLocationPermissionGranted = true;
-
-            //Location permission accepted, go get location
-            getLastKnownLocation();
-
-
-         //else prompt a dialogue to ask for location permission
-        } else {
-            ActivityCompat.requestPermissions(this,
-                    new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
-                    PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
-        }
-    }
-
-    /**
-     * Check if Google Maps service is running
-     * @return true if API is available; else return false
-     */
-    public boolean isServicesOK(){
-
-        int available = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(HomeActivity.this);
-
-        //if connection was successful
-        if(available == ConnectionResult.SUCCESS){
-
-            return true;
-
-        }
-        //else if an error occurred
-        else if(GoogleApiAvailability.getInstance().isUserResolvableError(available)){
-
-            //pop up dialog to get google services set up on device
-            Dialog dialog = GoogleApiAvailability.getInstance().getErrorDialog(HomeActivity.this, available, ERROR_DIALOG_REQUEST);
-            dialog.show();
-
-        }
-        //else prompt a message (TEMP)
-        else{
-            Toast.makeText(this, "You can't make map requests", Toast.LENGTH_SHORT).show();
-        }
-
-        return false;
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        //Log.d(TAG, "onActivityResult: called.");
-        switch (requestCode) {
-            case PERMISSIONS_REQUEST_ENABLE_GPS: {
-                if(mLocationPermissionGranted){
-
-                    //All permissions have been accepted, go get location
-                    getLastKnownLocation();
-                }
-                else{
-
-                    //otherwise get location permission
-                    getLocationPermission();
-                }
-            }
-        }
-
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults) {
-
-        mLocationPermissionGranted = false;
-
-        switch (requestCode) {
-            case PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION: {
-
-                //if request is greater than 0 they have been accepted. Otherwise result is cancelled.
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    mLocationPermissionGranted = true;
-                }
-            }
-        }
     }
 
 
     /**
-     * Retrieves the last known location of the GPS, given that location permission is granted
+     * Retrieve the GPS location and call the display walk method.
+     * If no GPS coordinates are returned or permission fails, display list unsorted; otherwise sorted
+     * https://developer.android.com/training/location/retrieve-current
+     * https://developer.android.com/training/location/receive-location-updates.html
+     * https://developers.google.com/android/reference/com/google/android/gms/location/LocationRequest
      */
-    private void getLastKnownLocation() {
+    private void getLocation() {
 
-        //recheck permission, if not granted return
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        Log.d(TAG, "GPS: LastLocation called.");
+
+        //check permission, if not granted return
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+            displayList(false);
             return;
         }
 
-        mFusedLocationClient.getLastLocation().addOnCompleteListener(new OnCompleteListener<Location>() {
+
+        mFusedLocationClient.getLastLocation().addOnCompleteListener(this, new OnCompleteListener<Location>() {
 
             @Override
             public void onComplete(@NonNull Task<android.location.Location> task) {
 
-                if(task.isSuccessful()){
+                if (task.isSuccessful()) {
+
                     Location location = task.getResult();
 
                     if (location != null) {
+
                         currentLatitude = location.getLatitude();
                         currentLongitude = location.getLongitude();
+
+                        Log.d(TAG, "onComplete: entered, GPS coordinated received");
+
+                        displayList(true);
+
+                    }else{
+
+                        displayList(false);
                     }
 
-                    Log.d(TAG, "onComplete: latitude: " + currentLatitude);
-                    Log.d(TAG, "onComplete: longitude: " + currentLongitude);
+                    Log.d(TAG, "GPS: onComplete: latitude: " + currentLatitude);
+                    Log.d(TAG, "GPS: onComplete: longitude: " + currentLongitude);
+                } else {
+                    Log.d(TAG, "GPS: onComplete failed ");
                 }
             }
         });
     }
-
 
 
 
