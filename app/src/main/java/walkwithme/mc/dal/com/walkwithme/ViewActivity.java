@@ -168,5 +168,39 @@ public class ViewActivity extends AppCompatActivity implements OnMapReadyCallbac
         mMap.moveCamera(CameraUpdateFactory.newLatLng(eventLoc));
 
     }
-}
+    public class getWeather extends AsyncTask<String, String, String> {
+        public static final String TAG = "Deep";
+
+        @Override
+        protected String doInBackground(String... strings) {
+            StringBuilder builder = new StringBuilder();
+
+            try {
+                URL url = new URL(strings[0]);
+                HttpURLConnection urlConnect = (HttpURLConnection) url.openConnection();
+
+                urlConnect.setRequestMethod("GET");
+
+                InputStreamReader streamReader = new InputStreamReader(urlConnect.getInputStream());
+
+                BufferedReader bufferedReader = new BufferedReader(streamReader);
+
+                String inputStr = "";
+
+
+                while ((inputStr = bufferedReader.readLine()) != null) {
+
+                    builder.append(inputStr);
+                }
+                urlConnect.disconnect();
+                streamReader.close();
+
+            } catch (Exception e) {
+
+                e.printStackTrace();
+            }
+            String builderStr = builder.toString();
+            return builderStr;
+        }
+    }}
 
