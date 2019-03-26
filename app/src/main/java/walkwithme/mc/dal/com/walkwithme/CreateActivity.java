@@ -204,8 +204,7 @@ public class CreateActivity extends AppCompatActivity {
                 TimePickerDialog timePickerDialog = new TimePickerDialog(CreateActivity.this, new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker timePicker, int hourOfDay, int minutes) {
-                        edittime.setText(hourOfDay + ":" + minutes);
-                    }
+                        edittime.setText(String.format("%02d",hourOfDay) + ":" + String.format("%02d",minutes));                    }
                 }, 0, 0, false);
 
                 timePickerDialog.show();
