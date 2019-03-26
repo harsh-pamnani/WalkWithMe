@@ -41,6 +41,7 @@ public class HomeActivity extends AppCompatActivity {
     private FusedLocationProviderClient mFusedLocationClient;
     private boolean mLocationPermissionGranted = false;
     private boolean firstOnStart = true;
+    private boolean gpsCoordinatesFound = false;
 
     //default location is Citadel Hill, Halifax, NS
     Double currentLatitude = 44.647398;
@@ -75,12 +76,19 @@ public class HomeActivity extends AppCompatActivity {
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                Log.d(TAG, "onDataChange: Data located through event listener");
                 Iterator<DataSnapshot> it =  dataSnapshot.getChildren().iterator();
                 while(it.hasNext()){
                     CreateActivityForm walkDat = it.next().getValue(CreateActivityForm.class);
 
                     walkArrayList.add(new Walk(currentLatitude, currentLongitude, walkDat.latitude, walkDat.longitude, walkDat.id, walkDat.title, walkDat.date, walkDat.location, walkDat.imageURL.get(0),walkDat.imageURL));
 
+                }
+
+                if(gpsCoordinatesFound){
+                    displayList(true);
+                }else{
+                    displayList(false);
                 }
 
             }
@@ -302,6 +310,8 @@ public class HomeActivity extends AppCompatActivity {
                     currentLatitude = location.getLatitude();
                     currentLongitude = location.getLongitude();
                     Log.d(TAG, "onSuccess: ["+ currentLatitude +","+ currentLongitude +"]");
+
+                    gpsCoordinatesFound = true;
 
                     displayList(true);
 
