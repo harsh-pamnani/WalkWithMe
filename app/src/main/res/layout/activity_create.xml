@@ -1,164 +1,126 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/scrollView"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:descendantFocusability="beforeDescendants"
+    android:focusableInTouchMode="true">
+
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        tools:context=".CreateActivity"
-        >
+        tools:context=".CreateActivity">
 
-        <LinearLayout
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/input_layout_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:layout_marginTop="15dp">
-
-            <TextView
-                android:id="@+id/lblTitle"
-                android:layout_width="fill_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="end"
-                android:layout_weight="0.9"
-                android:text="Title:"
-                android:textAlignment="textEnd"
-                android:textSize="24sp"
-                android:textColor="#000000"/>
-
             <EditText
                 android:id="@+id/lblTitleEdit"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:layout_marginLeft="10dp"
-                android:hint="Enter your title here"
-                android:layout_weight="0.4"
-                android:inputType="text"/>
+                android:hint="Event Title"
+                android:focusableInTouchMode="true"
+                android:inputType="text" />
+        </android.support.design.widget.TextInputLayout>
 
-        </LinearLayout>
-
-        <LinearLayout
+        <TextView
+            android:id="@+id/event_location_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="15dp">
+            android:textColor="#9E9E9E"
+            android:textSize="13dp"
+            android:layout_marginStart="13dp"
+            android:layout_marginLeft="13dp"/>
 
-            <TextView
-                android:id="@+id/lblVenue"
-                android:layout_width="fill_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="end"
-                android:layout_weight="0.9"
-                android:text="Venue:"
-                android:textAlignment="textEnd"
-                android:textSize="24sp"
-                android:textColor="#000000"/>
+        <fragment
+            android:id="@+id/place_autocomplete_fragment"
+            android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
+            android:layout_width="fill_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="10dp" />
 
-            <AutoCompleteTextView
-                android:id="@+id/autoCompleteTextView1"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginLeft="10dp"
-                android:hint="Enter your venue here"
-                android:layout_weight="0.4"
-                android:inputType="text"/>
-
-        </LinearLayout>
-
-        <LinearLayout
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/input_layout_name2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:layout_marginTop="15dp">
-
-            <TextView
-                android:id="@+id/lblDate"
-                android:layout_width="fill_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="end"
-                android:layout_weight="0.9"
-                android:text="Date:"
-                android:textAlignment="textEnd"
-                android:textSize="24sp"
-                android:textColor="#000000"/>
 
             <EditText
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
                 android:id="@+id/lblDateEdit"
-                android:clickable="true"
-                android:layout_weight="0.4"
-                android:hint="Click to choose date"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:layout_marginLeft="10dp"
+                android:clickable="true"
                 android:drawableRight="@drawable/ic_calendar_interface_symbol_tool"
-                android:editable="false"/>
+                android:editable="false"
+                android:hint="Event Date" />
 
-        </LinearLayout>
+        </android.support.design.widget.TextInputLayout>
 
-        <LinearLayout
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/input_layout_name3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:layout_marginTop="15dp">
-
-            <TextView
-                android:id="@+id/lblTime"
-                android:layout_width="fill_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="end"
-                android:layout_weight="0.9"
-                android:text="Time:"
-                android:textAlignment="textEnd"
-                android:textSize="24sp"
-                android:textColor="#000000"/>
 
 
             <EditText
+                android:id="@+id/lblTimeEdit"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/lblTimeEdit"
-                android:clickable="true"
-                android:layout_weight="0.4"
-                android:hint="Click to choose time"
-                android:layout_marginStart="10dp"
+                android:layout_marginStart="15dp"
                 android:layout_marginLeft="10dp"
+                android:clickable="true"
                 android:drawableRight="@drawable/ic_access_time_black_24dp"
                 android:editable="false"
-                />
-        </LinearLayout>
-        <TextView
-            android:id="@+id/lblDescription"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Description:"
-            android:layout_marginTop="10dp"
-            android:layout_marginLeft="20dp"
-            android:textSize="23sp"
-            android:textColor="#000000"/>
+                android:hint="Event Time" />
+        </android.support.design.widget.TextInputLayout>
 
-        <EditText
-            android:id="@+id/lblDescriptionEdit"
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/input_layout_name4"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:lines="4"
-            android:scrollbars="vertical"
-            android:layout_marginTop="10dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:hint="Enter your description here"
-            android:inputType="textMultiLine"
-            android:background="@drawable/edit_text_background"/>
+            android:layout_marginTop="15dp">
+
+            <EditText
+                android:id="@+id/lblDescriptionEdit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="20dp"
+                android:background="@drawable/edit_text_background"
+                android:hint="Event Description"
+                android:inputType="textMultiLine"
+                android:lines="4"
+                android:scrollbars="vertical" />
+        </android.support.design.widget.TextInputLayout>
+
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="15dp">
+            android:layout_marginTop="15dp"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/lblUploadButton"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginLeft="50dp"
+                android:layout_weight="0.8"
+                android:clickable="true"
+                android:drawableRight="@drawable/ic_camera_alt_black_24dp"
+                android:text="Upload Photo" />
 
             <ImageView
                 android:id="@+id/lblUpload"
@@ -167,35 +129,21 @@
                 android:layout_gravity="end"
                 android:layout_weight="0.4"
                 android:text="Upload a picture:"
-                android:textSize="24sp"
                 android:textAlignment="center"
-                android:textColor="#000000"/>
-
-            <Button
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/lblUploadButton"
-                android:clickable="true"
-                android:text="Upload Photo"
-                android:layout_weight="0.8"
-                android:layout_marginStart="10dp"
-                android:layout_marginLeft="50dp"
-                android:drawableRight="@drawable/ic_camera_alt_black_24dp" />
-
+                android:textColor="#000000"
+                android:textSize="24sp" />
         </LinearLayout>
-
-
 
 
         <Button
             android:id="@+id/submitButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/color_button"
             android:text="SUBMIT"
-            android:layout_marginTop="50dp"
-            android:layout_marginLeft="130dp"
-            android:textColor="#FFFFFF"
-            android:background="@drawable/color_button" />
+            android:textColor="#FFFFFF" />
 
     </LinearLayout>
-</ScrollView>
+</ScrollView> 	
