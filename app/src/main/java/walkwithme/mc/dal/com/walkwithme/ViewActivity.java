@@ -50,9 +50,18 @@ public class ViewActivity extends AppCompatActivity implements OnMapReadyCallbac
     //Initializing views
     CarouselView carouselView;
     TextView location;
-    TextView date;
+    TextView date, temperature;
     TextView description;
     TextView eventNameView;
+    ImageView icon;
+
+    // Variables for weather
+    private static final String URL_START = "https://api.openweathermap.org/data/2.5/forecast?lat=";
+    private static final String URL_MID = "&lon=";
+    private static final String URL_END = "&appid=c7efb41660082306a3b0fe9ee27f770d";
+    String latitude;
+    String longitude;
+    String weatherDate;
 
     //Fetching Images from the Drawable directory
     int[] sampleImages = {R.drawable.walk_2, R.drawable.walk_1, R.drawable.walk_3, R.drawable.walk_4};
@@ -91,6 +100,8 @@ public class ViewActivity extends AppCompatActivity implements OnMapReadyCallbac
         date = (TextView) findViewById(R.id.date);
         description = (TextView) findViewById(R.id.description);
         eventNameView = (TextView) findViewById(R.id.eventNameView);
+        temperature = (TextView) findViewById(R.id.temperature);
+        icon = (ImageView) findViewById(R.id.icon);
         // Setting the JSON data in the Activity
         location.setText(eventLocation);
         date.setText(eventDatetime);
