@@ -258,7 +258,58 @@ public class CreateActivity extends AppCompatActivity {
     }
 
     private void uploadImage() {
-        // Add the image upload code here
+        Log.i(TAG, "entered upload image");
+        //Log.i(TAG, filePath.toString());
+        if(filePath != null) {
+            Log.i(TAG, "entered if");
+            final ProgressDialog progressDialog = new ProgressDialog(this);
+            progressDialog.setTitle("Uploading...");
+            progressDialog.show();
+
+            Log.i(TAG, "Answer: "+ String.valueOf(imageURIs.size()));
+            for (int index=0; index<imageURIs.size(); index++) {
+                ref = storageReference.child("images/"+ titleForImage + ";" + UUID.randomUUID().toString());
+
+                Uri imageToBeUploaded = imageURIs.get(index);
+                Log.i(TAG, "URIs: " + imageToBeUploaded.toString());
+
+                ref.putFile(imageToBeUploaded)
+                        .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                            @Override
+                            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+
+                                ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                    @Override
+                                    public void onSuccess(Uri uri) {
+                                        Log.d(TAG, "onSuccess: uri= "+ uri.toString());
+                                        firebaseUploadedImagesURLs.add(uri.toString());
+                                    }
+                                });
+
+                                Log.d(TAG, "onSuccess: ");
+
+
+                                progressDialog.dismiss();
+                                Toast.makeText(CreateActivity.this, "Uploaded", Toast.LENGTH_SHORT).show();
+                            }
+                        })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                progressDialog.dismiss();
+                                Toast.makeText(CreateActivity.this, "Failed "+e.getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+                        })
+                        .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                            @Override
+                            public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+                                double progress = (100.0*taskSnapshot.getBytesTransferred()/taskSnapshot
+                                        .getTotalByteCount());
+                                progressDialog.setMessage("Uploaded "+(int)progress+"%");
+                            }
+                        });
+            }
+        }
     }
 
     private void setLocationError() {
