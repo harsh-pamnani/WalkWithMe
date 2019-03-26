@@ -34,9 +34,11 @@ public class Walk {
         this.eventId = id;
         this.eventCoordinateLat = latitude;
         this.eventCoordinateLong = longitude;
+
         this.eventDescription = "";
         this.eventWeather = "";
         this.carouselImages = carouselImages;
+
 
         this.distanceToUser = calculateDistance(userLatitude, userLongitude, latitude, longitude);
 
