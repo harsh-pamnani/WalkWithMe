@@ -468,6 +468,15 @@ public class CreateActivity extends AppCompatActivity {
         String time = edittime.getText().toString();
         String description = desctiptionEditText.getText().toString();
         ArrayList<String> uploadImageURL = firebaseUploadedImagesURLs;
+
+        if(uploadImageURL.size()==0) {
+            ArrayList<String> defaultArrayList = new ArrayList<String>();
+            defaultArrayList.add("https://firebasestorage.googleapis.com/v0/b/walk-8dfad.appspot.com/o/images%2Frergghtr%3Bad289c3d-8bd5-4b25-b102-743343420d09?alt=media&token=bf1403fd-9ae6-4d87-aef9-3c1ea47da5d6");
+            defaultArrayList.add("https://firebasestorage.googleapis.com/v0/b/walk-8dfad.appspot.com/o/images%2Fnewwww%3B3b97cec1-608c-42ce-8913-d9c3c7193464?alt=media&token=2c199a81-14b4-4bee-8c48-9628a7cb0843");
+
+            uploadImageURL = defaultArrayList;
+        }
+
         double latitudeValue = latitude;
         double longitudeValue = longitude;
 

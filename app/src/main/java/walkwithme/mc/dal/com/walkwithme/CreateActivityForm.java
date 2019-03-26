@@ -103,4 +103,7 @@ public class CreateActivityForm {
         this.latitude = latitude;
         this.longitude = longitude;
     }
+
+    public CreateActivityForm() {
+    }
 }
