@@ -20,6 +20,8 @@ import com.synnapps.carouselview.ImageListener;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+
 import walkwithme.mc.dal.com.walkwithme.ActivityJsonObj.ViewActivityJsonObj;
 
 public class ViewActivity extends AppCompatActivity implements OnMapReadyCallback {
@@ -70,6 +72,7 @@ public class ViewActivity extends AppCompatActivity implements OnMapReadyCallbac
         Double eventCoordinateLong = dataBundle.getDouble("eventCoordinateLong", 0.0);
         String eventDescription = dataBundle.getString("eventDescription", "N/A");
         String eventWeather = dataBundle.getString("eventWeather", "N/A");
+        ArrayList<String> eventMultiImageURLs = dataBundle.getStringArrayList("imageLoaderURL");
 
         //Fetching required data from JSON Object
         location = (TextView) findViewById(R.id.location);
