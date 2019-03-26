@@ -43,6 +43,12 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -58,31 +64,30 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.google.gson.JsonObject;
 import com.nostra13.universalimageloader.utils.L;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 public class CreateActivity extends AppCompatActivity {
 
+    public static final String LOG_TAG = "HP";
+    public static final String URL_START = "https://maps.googleapis.com/maps/api/place/details/json?placeid=";
+    public static final String URL_END = "&key=AIzaSyCVRI6McPgJ6ZLD3OXZwgtDeFcHH7qByaQ";
+
     ImageView photoImageView;
     Integer REQUEST_CAMERA=1, SELECT_FILE=0;
 
-    private final static String TAG = "HP";
-
     List<Bitmap> photoList = new ArrayList<Bitmap>();
-    EditText dateEditText;
-    EditText edittime;
-    EditText titleEditText;
-    EditText desctiptionEditText;
-    AutoCompleteTextView venueAutoComplete;
+    EditText dateEditText, edittime, titleEditText, desctiptionEditText;
+    Button photoUploadButton, submitButton;
+
     Calendar myCalendar;
-    Button photoUploadButton;
-    Button submitButton;
     TextView eventLocationView;
     AutocompleteSupportFragment autocompleteFragment;
-    String placeName;
-    File hpFile;
-    Uri hpFileUri;
+    String placeName, placeId;
+
     StorageReference ref;
     ArrayList<String> firebaseUploadedImagesURLs = new ArrayList<String>();
     ArrayList<Uri> imageURIs = new ArrayList<Uri>();
@@ -95,6 +100,10 @@ public class CreateActivity extends AppCompatActivity {
 
     private Uri filePath;
     String titleForImage;
+
+    double latitude, longitude;
+
+    Runnable runnable;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -144,12 +153,28 @@ public class CreateActivity extends AppCompatActivity {
             public void onPlaceSelected(Place place) {
                 eventLocationView.setText("Event Location");
                 placeName = place.getName();
+                placeId = place.getId();
+
+                Log.i(LOG_TAG, placeId);
+
+                runnable = new Runnable() {
+                    @Override
+                    public void run() {
+                        getLatLngOfPlace();
+                    }
+                };
+
+                //retrieve data on separate thread
+                Thread thread = new Thread(null, runnable,"background");
+                thread.start();
+
                 // https://maps.googleapis.com/maps/api/place/details/json?placeid=ChIJ4bBaC4EhWksRgzKOYtziUQo&key=AIzaSyCVRI6McPgJ6ZLD3OXZwgtDeFcHH7qByaQ
                 // then go to result.geometry.location
             }
 
             @Override
             public void onError(Status status) {
+                Log.i(LOG_TAG, status.toString());
             }
         });
 
@@ -222,7 +247,6 @@ public class CreateActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 setVenueError();
-                setLocationError();
                 setDateError();
                 setTimeError();
 
@@ -254,6 +278,41 @@ public class CreateActivity extends AppCompatActivity {
         });
     }
 
+    private void getLatLngOfPlace() {
+        String requestURL = URL_START + placeId + URL_END;
+
+        RequestQueue queue = Volley.newRequestQueue(this);
+
+        JsonObjectRequest getRequest = new JsonObjectRequest(Request.Method.GET, requestURL, null,
+                new Response.Listener<JSONObject>()
+                {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        // display response
+                        try {
+                            JSONObject result = response.getJSONObject("result");
+                            JSONObject geometry = result.getJSONObject("geometry");
+                            JSONObject location = geometry.getJSONObject("location");
+                            latitude = location.getDouble("lat");
+                            longitude = location.getDouble("lng");
+                        } catch (JSONException e) {
+                            Log.i(LOG_TAG, e.getMessage());
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener()
+                {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.d(LOG_TAG, error.toString());
+                    }
+                }
+        );
+
+        queue.add(getRequest);
+    }
+
     private void uploadImage() {
         if(filePath != null) {
             final ProgressDialog progressDialog = new ProgressDialog(this);
@@ -273,13 +332,10 @@ public class CreateActivity extends AppCompatActivity {
                                 ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                                     @Override
                                     public void onSuccess(Uri uri) {
-                                        Log.d(TAG, "onSuccess: uri= "+ uri.toString());
+                                        Log.d(LOG_TAG, "onSuccess: uri= "+ uri.toString());
                                         firebaseUploadedImagesURLs.add(uri.toString());
                                     }
                                 });
-
-                                Log.d(TAG, "onSuccess: ");
-
 
                                 progressDialog.dismiss();
                                 Toast.makeText(CreateActivity.this, "Uploaded", Toast.LENGTH_SHORT).show();
@@ -302,10 +358,6 @@ public class CreateActivity extends AppCompatActivity {
                         });
             }
         }
-    }
-
-    private void setLocationError() {
-
     }
 
     private void setTimeError() {
@@ -416,12 +468,16 @@ public class CreateActivity extends AppCompatActivity {
         String time = edittime.getText().toString();
         String description = desctiptionEditText.getText().toString();
         ArrayList<String> uploadImageURL = firebaseUploadedImagesURLs;
+        double latitudeValue = latitude;
+        double longitudeValue = longitude;
 
+        /*
         for(int i=0; i<uploadImageURL.size(); i++) {
-            Log.i(TAG, "URL" + String.valueOf(i) + ": " + uploadImageURL.get(i));
+            Log.i("HP", "URL" + String.valueOf(i) + ": " + uploadImageURL.get(i));
         }
+        */
 
-        CreateActivityForm crtFrm = new CreateActivityForm(id, title, location, date, time, description, uploadImageURL);
+        CreateActivityForm crtFrm = new CreateActivityForm(id, title, location, date, time, description, uploadImageURL, latitudeValue, longitudeValue);
         fireBaseAuth.push().setValue(crtFrm);
     }
 }

@@ -14,6 +14,24 @@ public class CreateActivityForm {
     String time;
     String description;
     ArrayList<String> imageURL;
+    double latitude;
+    double longitude;
+
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+    }
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
+    }
 
     public ArrayList<String> getImageURL() {
         return imageURL;
@@ -74,7 +92,7 @@ public class CreateActivityForm {
     }
 
     // Constructor for Create Activity form
-    public CreateActivityForm(String id, String title, String location, String date, String time, String description, ArrayList<String> imageURL) {
+    public CreateActivityForm(String id, String title, String location, String date, String time, String description, ArrayList<String> imageURL, double latitude, double longitude) {
         this.id = id;
         this.title = title;
         this.location = location;
@@ -82,5 +100,7 @@ public class CreateActivityForm {
         this.time = time;
         this.description = description;
         this.imageURL = imageURL;
+        this.latitude = latitude;
+        this.longitude = longitude;
     }
 }
