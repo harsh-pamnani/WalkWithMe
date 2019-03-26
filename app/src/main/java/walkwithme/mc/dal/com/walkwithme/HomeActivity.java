@@ -1,19 +1,41 @@
 package walkwithme.mc.dal.com.walkwithme;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.view.View;
+import android.location.Location;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnSuccessListener;
+
 public class HomeActivity extends AppCompatActivity {
+
+    public static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 9003;
+    private static final String TAG = "MainActivity";
+
+    private FusedLocationProviderClient mFusedLocationClient;
+    private boolean mLocationPermissionGranted = false;
+    private boolean firstOnStart = true;
+
+    //default location is Citadel Hill, Halifax, NS
+    Double currentLatitude = 44.647398;
+    Double currentLongitude  = -63.580364;
 
     ListView walkList;
     FloatingActionButton addFab;
@@ -23,6 +45,13 @@ public class HomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
+        Log.d(TAG, "onCreate: entered");
+        
+        //instantiate the location provider client
+        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+
+        getLocationPermission();
 
         walkList = findViewById(R.id.list_walks);
         addFab =   findViewById(R.id.addFab);
@@ -68,22 +97,120 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
-
     }
 
 
     @Override
-    protected void onResume() {
-        super.onResume();
+    protected void onStart() {
+        super.onStart();
+
+        Log.d(TAG, "onStart: entered (GPS)");
+
+        //if on first onStart, wait for permission request to make decision
+        if(firstOnStart){
+            firstOnStart = false;
+
+
+        //else on the next onStarts,
+        }else {
+
+            //if Location permission has been granted, go get the coordinates
+            if (mLocationPermissionGranted) {
+                Log.d(TAG, "onStart: permission granted");
+                getLastLocation();
+
+            //else display the list without getting location
+            } else {
+                Log.d(TAG, "onStart: permission false");
+                displayList(false);
+            }
+
+        }
+    }
+
+
+    /**
+     * Checks if Location permission has been granted in the past
+     * https://developer.android.com/training/permissions/requesting.html
+     * https://developer.android.com/guide/topics/permissions/overview
+     */
+    private void getLocationPermission(){
+
+        // If permission is not granted
+        if(ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+            != PackageManager.PERMISSION_GRANTED){
+
+            //request the permission
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                    PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
+
+            // PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION is an
+            // app-defined int constant. The callback method gets the
+            // result of the request.
+
+            // Result determined in onRequestPermissionResult
+
+        //else permission is granted (has been granted in the past)
+        }else{
+
+            mLocationPermissionGranted = true;
+
+            getLastLocation();
+        }
+
+    }
+
+    /**
+     * https://developer.android.com/training/permissions/requesting.html
+     */
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults) {
+
+        switch (requestCode) {
+            case PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION: {
+
+                // If request is cancelled/denied, the result arrays are empty.
+                // If request has been granted
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                    mLocationPermissionGranted = true;
+                    // permission was granted, yay! Do the
+                    // contacts-related task you need to do.
+                    Log.d(TAG, "onRequestPermissionsResult: Granted!");
+
+                    getLastLocation();
+
+                    //else if the request has been denied
+                }else{
+
+                     mLocationPermissionGranted = false;
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
+                    Log.d(TAG, "onRequestPermissionsResult: Denied!");
+
+                    displayList(false);
+                }
+            }
+        }
+    }
+
+
+    private void displayList(boolean gpsReceived){
+
+        Log.d(TAG, "displayList: entered gps: " + gpsReceived);
 
         //array containing all walk items
         walkArrayList = new ArrayList<>();
 
-        //[Temp] method to populate array
+        //populate array
         retrieveData();
 
-        //sort walks
-        sortData();
+        //if the gps is available sort by distance to user
+        if(gpsReceived) {
+            sortWalksByDistance();
+        }
 
         //create Adapter instance
         WalkListAdapter walkListAdapter = new WalkListAdapter(this, R.layout.listview_item, walkArrayList);
@@ -92,6 +219,7 @@ public class HomeActivity extends AppCompatActivity {
         walkList.setAdapter(walkListAdapter);
     }
 
+
     /**
      * Method to populate the list of walks
      * Currently it is updated manually, future work requires it to be drawn from database
@@ -99,8 +227,8 @@ public class HomeActivity extends AppCompatActivity {
     private void retrieveData() {
 
 
-        Double currentLat  =  44.637386;
-        Double currentLong = -63.587347;
+        Double currentLat  =  currentLatitude; //44.637386;
+        Double currentLong = currentLongitude; //-63.587347;
 
         //Sample walks for testing
         Walk walk1 = new Walk(currentLat,currentLong,44.647824,-63.578754,1,"The Fats and the Furious","20-Apr-2019 14:00:00", "Citadel Hill Entrance","https://hips.hearstapps.com/vader-prod.s3.amazonaws.com/1538172046-woman-walking-on-a-path-royalty-free-image-503818820-1538171480.jpg");
@@ -131,9 +259,10 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     /**
-     * Method that sortes the walkArrayList using the GPS coordinates
+     * Method that sorts the walkArrayList based on distance to user calculated value.
+     * Value is calculated in the Walk class constructor given user and location coordinates.
      */
-    private void sortData(){
+    private void sortWalksByDistance(){
 
         Collections.sort(walkArrayList, new Comparator<Walk>() {
             @Override
@@ -143,10 +272,42 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
-
     }
 
 
+
+    /**
+     * https://developer.android.com/training/location/retrieve-current.html
+     */
+    private void getLastLocation() {
+
+        Log.d(TAG, "getLastLocation: entered");
+        //mandatory permission check required before getting last location
+        if(ActivityCompat.checkSelfPermission(this,Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED){
+            displayList(false);
+            return;
+        }
+
+        mFusedLocationClient.getLastLocation().addOnSuccessListener(this, new OnSuccessListener<Location>() {
+            @Override
+            public void onSuccess(Location location) {
+                // Got last known location. In some rare situations this can be null.
+                if (location != null) {
+                    Log.d(TAG, "onSuccess: location not null");
+
+                    currentLatitude = location.getLatitude();
+                    currentLongitude = location.getLongitude();
+                    Log.d(TAG, "onSuccess: ["+ currentLatitude +","+ currentLongitude +"]");
+
+                    displayList(true);
+
+                }else{
+                    Log.d(TAG, "onSuccess: location null");
+                    displayList(false);
+                }
+            }
+        });
+    }
 
 
 }
