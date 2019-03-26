@@ -144,14 +144,12 @@ public class CreateActivity extends AppCompatActivity {
             public void onPlaceSelected(Place place) {
                 eventLocationView.setText("Event Location");
                 placeName = place.getName();
-                Log.i("HP", "Place: " + place.getName() + ", " + place.getId());
                 // https://maps.googleapis.com/maps/api/place/details/json?placeid=ChIJ4bBaC4EhWksRgzKOYtziUQo&key=AIzaSyCVRI6McPgJ6ZLD3OXZwgtDeFcHH7qByaQ
                 // then go to result.geometry.location
             }
 
             @Override
             public void onError(Status status) {
-                Log.i("HP", "An error occurred: " + status);
             }
         });
 
@@ -257,20 +255,15 @@ public class CreateActivity extends AppCompatActivity {
     }
 
     private void uploadImage() {
-        Log.i(TAG, "entered upload image");
-        //Log.i(TAG, filePath.toString());
         if(filePath != null) {
-            Log.i(TAG, "entered if");
             final ProgressDialog progressDialog = new ProgressDialog(this);
             progressDialog.setTitle("Uploading...");
             progressDialog.show();
 
-            Log.i(TAG, "Answer: "+ String.valueOf(imageURIs.size()));
             for (int index=0; index<imageURIs.size(); index++) {
                 ref = storageReference.child("images/"+ titleForImage + ";" + UUID.randomUUID().toString());
 
                 Uri imageToBeUploaded = imageURIs.get(index);
-                Log.i(TAG, "URIs: " + imageToBeUploaded.toString());
 
                 ref.putFile(imageToBeUploaded)
                         .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
@@ -395,16 +388,12 @@ public class CreateActivity extends AppCompatActivity {
 
         if(resultCode== Activity.RESULT_OK){
             if(requestCode==REQUEST_CAMERA){
-                Log.i(TAG, "entered in request camera access");
 
                 Bitmap bmp = (Bitmap) data.getExtras().get("data");
                 photoList.add(bmp);
                 photoImageView.setImageBitmap(photoList.get(0));
             } else if(requestCode==SELECT_FILE){
-                Log.i(TAG, "entered in select file access");
                 ClipData clipData = data.getClipData();
-
-                //Log.i(TAG, data.getDataString());
 
                 for (int i = 0; i < clipData.getItemCount(); i++) {
                     Uri tempPath = clipData.getItemAt(i).getUri();
