@@ -231,10 +231,15 @@ public class ViewActivity extends AppCompatActivity implements OnMapReadyCallbac
 
                     Log.i(TAG, description);
 
-                    String sysJson = c.getString("dt_txt");}
-                } catch (JSONException e) {
+                    String sysJson = c.getString("dt_txt");
+                    if (sysJson.substring(0, 10).equals(weatherDate)) {
+                        temperature.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 50);
+                        double temp = main.getDouble("temp");
+                        int t = (int) (temp - k);
+                        temperature.setText(String.valueOf(t) + " " + "°C");
+                    }}} catch (JSONException e) {
 
-                    e.printStackTrace();
-                }
-            }}}
+                        e.printStackTrace();
+                    }
+                }}}
 
