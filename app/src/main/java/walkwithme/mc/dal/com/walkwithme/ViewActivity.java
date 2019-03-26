@@ -115,6 +115,20 @@ public class ViewActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         // Setting the location coordinates in google Map
         eventLoc = new LatLng(eventCoordinateLang, eventCoordinateLong);
+        String strDate = eventDatetime.substring(0,11);
+        Log.i("Deep",strDate);
+        DateFormat format = new SimpleDateFormat("dd-MMM-yyyy", Locale.ENGLISH);
+        DateFormat newFormat = new SimpleDateFormat("yyyy-MM-dd");
+        String extractedDate = "";
+        try {
+            Date date = format.parse(strDate);
+            extractedDate = newFormat.format(date);
+        } catch (ParseException e) {
+            Log.i("Deep", "exception");
+            e.printStackTrace();
+        }
+
+        Log.i("Deep", extractedDate);
     }
 
     // Code to swipe the images in the carousel
