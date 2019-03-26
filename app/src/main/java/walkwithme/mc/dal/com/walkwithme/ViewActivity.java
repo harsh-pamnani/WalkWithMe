@@ -129,6 +129,19 @@ public class ViewActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
 
         Log.i("Deep", extractedDate);
+
+        //weatherDate = strDate.substring(0,10);
+
+        // latitude = String.valueOf(eventCoordinateLang);
+        // longitude = String.valueOf(eventCoordinateLong);
+        // weatherDate = extractedDate;
+
+        latitude = String.valueOf(19.0760);
+        longitude = String.valueOf(-72.8777);
+        weatherDate = "2019-03-26";
+
+        String requestURL = URL_START + latitude + URL_MID + longitude + URL_END;
+        new getWeather().execute(requestURL);
     }
 
     // Code to swipe the images in the carousel
