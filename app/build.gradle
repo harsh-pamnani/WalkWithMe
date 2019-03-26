@@ -38,7 +38,7 @@ dependencies {
 
     implementation 'com.google.firebase:firebase-core:16.0.7' //To Add firebase dependency
     implementation 'com.google.firebase:firebase-database:16.1.0'
-
+    implementation 'com.squareup.picasso:picasso:2.71828'
 }
 
 apply plugin: 'com.google.gms.google-services'
