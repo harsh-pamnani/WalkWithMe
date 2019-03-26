@@ -202,5 +202,39 @@ public class ViewActivity extends AppCompatActivity implements OnMapReadyCallbac
             String builderStr = builder.toString();
             return builderStr;
         }
-    }}
+        protected void onPostExecute(String str) {
+
+            super.onPostExecute(str);
+
+            try {
+
+                double k = 273.15;
+
+
+                JSONObject Obj = new JSONObject(str);
+
+                Log.w(TAG, Obj.toString());
+
+                JSONArray one = Obj.getJSONArray("list");
+
+
+                for (int i = 0; i < one.length(); i++) {
+
+                    Log.i(TAG, String.valueOf(i));
+
+                    JSONObject c = one.getJSONObject(i);
+                    JSONObject main = c.getJSONObject("main");
+                    JSONArray weather = c.getJSONArray("weather");
+                    JSONObject weatherzero = weather.getJSONObject(0);
+
+                    String description = weatherzero.getString("main");
+
+                    Log.i(TAG, description);
+
+                    String sysJson = c.getString("dt_txt");}
+                } catch (JSONException e) {
+
+                    e.printStackTrace();
+                }
+            }}}
 
