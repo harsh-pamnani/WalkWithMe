@@ -421,6 +421,19 @@ public class CreateActivity extends AppCompatActivity {
     }
 
     private void prepareFormDataforFirebase(){
-        // Add code here to submit the event data to firebase
+        String id = UUID.randomUUID().toString();
+        String title = titleEditText.getText().toString();
+        String location = placeName;
+        String date = dateEditText.getText().toString();
+        String time = edittime.getText().toString();
+        String description = desctiptionEditText.getText().toString();
+        ArrayList<String> uploadImageURL = firebaseUploadedImagesURLs;
+
+        for(int i=0; i<uploadImageURL.size(); i++) {
+            Log.i(TAG, "URL" + String.valueOf(i) + ": " + uploadImageURL.get(i));
+        }
+
+        CreateActivityForm crtFrm = new CreateActivityForm(id, title, location, date, time, description, uploadImageURL);
+        fireBaseAuth.push().setValue(crtFrm);
     }
 }
