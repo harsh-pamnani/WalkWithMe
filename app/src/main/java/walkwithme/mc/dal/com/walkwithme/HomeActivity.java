@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.view.View;
@@ -39,6 +38,8 @@ public class HomeActivity extends AppCompatActivity {
         // Get walk data from the firebase database
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference ref = database.getReference("WALK_DATA");
+
+        // Listner to monitor the changes in the firebase node.
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -113,12 +114,6 @@ public class HomeActivity extends AppCompatActivity {
     }
 
 
-
-    /**
-     * Method to populate the list of walks
-     * Currently it is updated manually, future work requires it to be drawn from database
-     */
-
     /**
      * Method that sortes the walkArrayList using the GPS coordinates
      */
@@ -134,9 +129,6 @@ public class HomeActivity extends AppCompatActivity {
 
 
     }
-
-
-
 
 
 
