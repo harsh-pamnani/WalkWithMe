@@ -3,6 +3,7 @@ package walkwithme.mc.dal.com.walkwithme;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.icu.text.SymbolTable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -77,7 +78,9 @@ public class HomeActivity extends AppCompatActivity {
                 Iterator<DataSnapshot> it =  dataSnapshot.getChildren().iterator();
                 while(it.hasNext()){
                     CreateActivityForm walkDat = it.next().getValue(CreateActivityForm.class);
+
                     walkArrayList.add(new Walk(44.637386, -63.578754, 44.647824, -63.578754, walkDat.id, walkDat.title, walkDat.date, walkDat.location, walkDat.imageURL.get(0),walkDat.imageURL));
+
                 }
 
             }
