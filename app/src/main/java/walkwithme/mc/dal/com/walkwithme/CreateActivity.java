@@ -238,8 +238,8 @@ public class CreateActivity extends AppCompatActivity {
 
 
     private void prepareFormDataforFirebase(){
-        CreateActivityForm crtFrm = new CreateActivityForm(titleEditText.getText().toString());
-        fireBaseAuth.push().setValue(crtFrm);
+       // CreateActivityForm crtFrm = new CreateActivityForm(titleEditText.getText().toString());
+        //fireBaseAuth.push().setValue(crtFrm);
 
     }
 }
