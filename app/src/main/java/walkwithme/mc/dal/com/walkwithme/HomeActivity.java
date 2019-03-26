@@ -112,6 +112,7 @@ public class HomeActivity extends AppCompatActivity {
                 viewBundle.putDouble("eventCoordinateLong", walkArrayList.get(i).getEventCoordinateLong());
                 viewBundle.putString("eventDescription", walkArrayList.get(i).getEventDescription());
                 viewBundle.putString("eventWeather", walkArrayList.get(i).getEventWeather());
+                viewBundle.putStringArrayList("imageLoaderURL", walkArrayList.get(i).getCarouselImages());
 
                 //add bundle to intent
                 viewIntent.putExtra("bundle", viewBundle);
