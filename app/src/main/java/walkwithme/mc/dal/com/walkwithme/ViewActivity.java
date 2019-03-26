@@ -3,6 +3,7 @@ package walkwithme.mc.dal.com.walkwithme;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.Nullable;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.ImageView;
@@ -21,6 +22,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import walkwithme.mc.dal.com.walkwithme.ActivityJsonObj.ViewActivityJsonObj;
 
@@ -86,9 +88,13 @@ public class ViewActivity extends AppCompatActivity implements OnMapReadyCallbac
         eventNameView.setText(eventName);
 
         //Creating the carousel View for the event images
-        carouselView = (CarouselView) findViewById(R.id.carousel_view);
-        carouselView.setPageCount(sampleImages.length);
-        carouselView.setImageListener(imageListener);
+//        carouselView = (CarouselView) findViewById(R.id.carousel_view);
+//        carouselView.setPageCount(sampleImages.length);
+//        carouselView.setImageListener(imageListener);
+        ViewPager viewPager = findViewById(R.id.view_pager_Image);
+        PagerViewAdapter adapter = new PagerViewAdapter(this, eventMultiImageURLs.toArray(new String[eventMultiImageURLs.size()]));
+        viewPager.setAdapter(adapter);
+
 
         // Setting the location coordinates in google Map
         eventLoc = new LatLng(eventCoordinateLang, eventCoordinateLong);
