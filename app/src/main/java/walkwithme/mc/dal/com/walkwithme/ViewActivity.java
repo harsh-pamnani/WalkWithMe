@@ -237,9 +237,40 @@ public class ViewActivity extends AppCompatActivity implements OnMapReadyCallbac
                         double temp = main.getDouble("temp");
                         int t = (int) (temp - k);
                         temperature.setText(String.valueOf(t) + " " + "°C");
-                    }}} catch (JSONException e) {
 
-                        e.printStackTrace();
+                        switch (description) {
+                            case "Rain":
+                                icon.setBackgroundResource(R.drawable.rain);
+                                break;
+                            case "Clouds":
+                                icon.setBackgroundResource(R.drawable.cloud);
+                                break;
+                            case "Snow":
+                                icon.setBackgroundResource(R.drawable.snow);
+                                break;
+                            default:
+                                icon.setBackgroundResource(R.drawable.clear);
+                                break;
+                        }
+
+                        break;
                     }
-                }}}
+
+
+                }
+
+                //JSONObject zero = one.getJSONObject(0);
+
+
+            } catch (JSONException e) {
+
+                e.printStackTrace();
+            }
+
+        }
+
+    }
+
+
+}
 
