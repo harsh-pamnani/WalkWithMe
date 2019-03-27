@@ -12,6 +12,7 @@ import android.util.TypedValue;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -66,6 +67,7 @@ public class ViewActivity extends AppCompatActivity implements OnMapReadyCallbac
     String latitude;
     String longitude;
     String weatherDate;
+
 //
 //    //Fetching Images from the Drawable directory
 //    int[] sampleImages = {R.drawable.walk_2, R.drawable.walk_1, R.drawable.walk_3, R.drawable.walk_4};
@@ -230,7 +232,7 @@ public class ViewActivity extends AppCompatActivity implements OnMapReadyCallbac
                     JSONArray weather = c.getJSONArray("weather");
                     JSONObject weatherzero = weather.getJSONObject(0);
 
-                    String description = weatherzero.getString("main");
+                    String description = weatherzero.getString("description");
 
                     String sysJson = c.getString("dt_txt");
 
@@ -240,22 +242,24 @@ public class ViewActivity extends AppCompatActivity implements OnMapReadyCallbac
                         int t = (int) (temp - k);
                         temperature.setText(String.valueOf(t) + " " + "°C");
 
-                        switch (description) {
-                            case "Rain":
-                                icon.setBackgroundResource(R.drawable.rain);
-                                break;
-                            case "Clouds":
-                                icon.setBackgroundResource(R.drawable.cloud);
-                                break;
-                            case "Snow":
-                                icon.setBackgroundResource(R.drawable.snow);
-                                break;
-                            default:
-                                icon.setBackgroundResource(R.drawable.clear);
-                                break;
-                        }
 
-                        break;
+
+                        //switch (description) {
+                          //  case "Rain":
+                            //    icon.setBackgroundResource(R.drawable.rain);
+                              //  break;
+                            //case "Clouds":
+                             //   icon.setBackgroundResource(R.drawable.cloud);
+                              //  break;
+                            //case "Snow":
+                              //  icon.setBackgroundResource(R.drawable.snow);
+                                //break;
+                            //default:
+                              //  icon.setBackgroundResource(R.drawable.clear);
+                                //break;
+                        //}
+
+                      //  break;
                     }
 
 
