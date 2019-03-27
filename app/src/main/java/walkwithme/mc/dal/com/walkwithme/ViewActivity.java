@@ -49,6 +49,7 @@ public class ViewActivity extends AppCompatActivity implements OnMapReadyCallbac
     Double eventCoordinateLong = -63.587347;
 
     LatLng eventLoc = null;
+    String eventLocation = "Your event location";
 
     //Initializing views
     CarouselView carouselView;
@@ -65,19 +66,16 @@ public class ViewActivity extends AppCompatActivity implements OnMapReadyCallbac
     String latitude;
     String longitude;
     String weatherDate;
-
-    //Fetching Images from the Drawable directory
-    int[] sampleImages = {R.drawable.walk_2, R.drawable.walk_1, R.drawable.walk_3, R.drawable.walk_4};
+//
+//    //Fetching Images from the Drawable directory
+//    int[] sampleImages = {R.drawable.walk_2, R.drawable.walk_1, R.drawable.walk_3, R.drawable.walk_4};
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view);
 
-        // Code Snippet From GOOGLE MAP API Doc
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
+
 
         // Intent object passed from Home Activity
         Intent intent = getIntent();
@@ -91,10 +89,10 @@ public class ViewActivity extends AppCompatActivity implements OnMapReadyCallbac
         final Integer eventId = dataBundle.getInt("eventID",-1);
         String eventName = dataBundle.getString("eventName", "N/A");
         String eventDatetime = dataBundle.getString("eventDatetime", "N/A");
-        String eventLocation = dataBundle.getString("eventLocation", "N/A");
+        eventLocation = dataBundle.getString("eventLocation", "N/A");
         String eventImageURL = dataBundle.getString("eventImageURL", "N/A");
-        Double eventCoordinateLang = dataBundle.getDouble("eventCoordinateLang", 0.0);
-        Double eventCoordinateLong = dataBundle.getDouble("eventCoordinateLong", 0.0);
+        eventCoordinateLang = dataBundle.getDouble("eventCoordinateLang", 0.0);
+        eventCoordinateLong = dataBundle.getDouble("eventCoordinateLong", 0.0);
         String eventDescription = dataBundle.getString("eventDescription", "N/A");
         String eventWeather = dataBundle.getString("eventWeather", "N/A");
         ArrayList<String> eventMultiImageURLs = dataBundle.getStringArrayList("imageLoaderURL");
@@ -113,11 +111,6 @@ public class ViewActivity extends AppCompatActivity implements OnMapReadyCallbac
         description.setText(eventDescription);
         eventNameView.setText(eventName);
 
-
-        //Creating the carousel View for the event images
-//        carouselView = (CarouselView) findViewById(R.id.carousel_view);
-//        carouselView.setPageCount(sampleImages.length);
-//        carouselView.setImageListener(imageListener);
         ViewPager viewPager = findViewById(R.id.view_pager_Image);
         PagerViewAdapter adapter = new PagerViewAdapter(this, eventMultiImageURLs.toArray(new String[eventMultiImageURLs.size()]));
         viewPager.setAdapter(adapter);
@@ -125,6 +118,8 @@ public class ViewActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         // Setting the location coordinates in google Map
         eventLoc = new LatLng(eventCoordinateLang, eventCoordinateLong);
+
+
 
 
 
@@ -145,15 +140,20 @@ public class ViewActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         String requestURL = URL_START + latitude + URL_MID + longitude + URL_END;
         new getWeather().execute(requestURL);
+
+        // Code Snippet From GOOGLE MAP API Doc
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.map);
+        mapFragment.getMapAsync(this);
     }
 
-    // Code to swipe the images in the carousel
-    ImageListener imageListener = new ImageListener() {
-        @Override
-        public void setImageForPosition(int position, ImageView imageView) {
-            imageView.setImageResource(sampleImages[position]);
-        }
-    };
+//    // Code to swipe the images in the carousel
+//    ImageListener imageListener = new ImageListener() {
+//        @Override
+//        public void setImageForPosition(int position, ImageView imageView) {
+//            imageView.setImageResource(sampleImages[position]);
+//        }
+//    };
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
@@ -167,8 +167,8 @@ public class ViewActivity extends AppCompatActivity implements OnMapReadyCallbac
         eventLoc = new LatLng(eventCoordinateLang, eventCoordinateLong);
 
         // Adding Marker text in Google Map
-        mMap.addMarker(new MarkerOptions().position(eventLoc).title("Your Meeting Location"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(eventLoc));
+        mMap.addMarker(new MarkerOptions().position(eventLoc).title(eventLocation));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(eventLoc,15));
 
     }
 

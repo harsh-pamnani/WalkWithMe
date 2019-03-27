@@ -24,7 +24,7 @@ public class Walk {
 
     private Float distanceToUser; //distance in km
 
-    public Walk(double userLatitude, double userLongitude, double latitude, double longitude, String id, String name, String datetime, String location, String imgURL, ArrayList<String> carouselImages) {
+    public Walk(double userLatitude, double userLongitude, double latitude, double longitude, String id, String name, String datetime, String location, String imgURL, ArrayList<String> carouselImages,String eventDescription) {
 
         this.eventName = name;
         this.eventDatetime = datetime;
@@ -35,7 +35,7 @@ public class Walk {
         this.eventCoordinateLat = latitude;
         this.eventCoordinateLong = longitude;
 
-        this.eventDescription = "";
+        this.eventDescription = eventDescription;
         this.eventWeather = "";
         this.carouselImages = carouselImages;
 

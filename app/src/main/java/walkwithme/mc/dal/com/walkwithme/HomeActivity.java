@@ -81,7 +81,7 @@ public class HomeActivity extends AppCompatActivity {
                 while(it.hasNext()){
                     CreateActivityForm walkDat = it.next().getValue(CreateActivityForm.class);
 
-                    walkArrayList.add(new Walk(currentLatitude, currentLongitude, walkDat.latitude, walkDat.longitude, walkDat.id, walkDat.title, walkDat.date, walkDat.location, walkDat.imageURL.get(0),walkDat.imageURL));
+                    walkArrayList.add(new Walk(currentLatitude, currentLongitude, walkDat.latitude, walkDat.longitude, walkDat.id, walkDat.title, walkDat.date, walkDat.location, walkDat.imageURL.get(0),walkDat.imageURL,walkDat.description));
 
                 }
 
