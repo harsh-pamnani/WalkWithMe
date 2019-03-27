@@ -319,44 +319,42 @@ public class CreateActivity extends AppCompatActivity {
             progressDialog.setTitle("Uploading...");
             progressDialog.show();
 
-            for (int index=0; index<imageURIs.size(); index++) {
-                ref = storageReference.child("images/"+ titleForImage + ";" + UUID.randomUUID().toString());
 
-                Uri imageToBeUploaded = imageURIs.get(index);
+            ref = storageReference.child("images/"+ titleForImage + ";" + UUID.randomUUID().toString());
 
-                ref.putFile(imageToBeUploaded)
-                        .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                            @Override
-                            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+            ref.putFile(filePath)
+                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
 
-                                ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                                    @Override
-                                    public void onSuccess(Uri uri) {
-                                        Log.d(LOG_TAG, "onSuccess: uri= "+ uri.toString());
-                                        firebaseUploadedImagesURLs.add(uri.toString());
-                                    }
-                                });
+                            ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                @Override
+                                public void onSuccess(Uri uri) {
+                                    Log.d(LOG_TAG, "onSuccess: uri= "+ uri.toString());
+                                    firebaseUploadedImagesURLs.add(uri.toString());
+                                }
+                            });
 
-                                progressDialog.dismiss();
-                                Toast.makeText(CreateActivity.this, "Uploaded", Toast.LENGTH_SHORT).show();
-                            }
-                        })
-                        .addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                progressDialog.dismiss();
-                                Toast.makeText(CreateActivity.this, "Failed "+e.getMessage(), Toast.LENGTH_SHORT).show();
-                            }
-                        })
-                        .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-                            @Override
-                            public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
-                                double progress = (100.0*taskSnapshot.getBytesTransferred()/taskSnapshot
-                                        .getTotalByteCount());
-                                progressDialog.setMessage("Uploaded "+(int)progress+"%");
-                            }
-                        });
-            }
+                            progressDialog.dismiss();
+                            Toast.makeText(CreateActivity.this, "Uploaded", Toast.LENGTH_SHORT).show();
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            progressDialog.dismiss();
+                            Toast.makeText(CreateActivity.this, "Failed "+e.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    })
+                    .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+                            double progress = (100.0*taskSnapshot.getBytesTransferred()/taskSnapshot
+                                    .getTotalByteCount());
+                            progressDialog.setMessage("Uploaded "+(int)progress+"%");
+                        }
+                    });
+
         }
     }
 
@@ -414,8 +412,6 @@ public class CreateActivity extends AppCompatActivity {
                 } else if (items[i].equals("Gallery")) {
                     Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                     intent.setType("image/*");
-                    intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
-                    intent.setAction(Intent.ACTION_GET_CONTENT);
                     startActivityForResult(intent, SELECT_FILE);
 
                 } else if (items[i].equals("Cancel")) {
@@ -445,14 +441,7 @@ public class CreateActivity extends AppCompatActivity {
                 photoList.add(bmp);
                 photoImageView.setImageBitmap(photoList.get(0));
             } else if(requestCode==SELECT_FILE){
-                ClipData clipData = data.getClipData();
-
-                for (int i = 0; i < clipData.getItemCount(); i++) {
-                    Uri tempPath = clipData.getItemAt(i).getUri();
-                    imageURIs.add(tempPath);
-                }
-
-                filePath = clipData.getItemAt(0).getUri();
+                filePath = data.getData();
                 photoImageView.setImageURI(filePath);
                 uploadImage();
 
