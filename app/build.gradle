@@ -50,6 +50,8 @@ dependencies {
     implementation 'com.google.firebase:firebase-auth:9.2.1'
 
     implementation 'com.android.volley:volley:1.1.0'
+
+    // Glide dependency to download image in app gradle
     implementation 'com.github.bumptech.glide:glide:4.8.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.8.0'
 }

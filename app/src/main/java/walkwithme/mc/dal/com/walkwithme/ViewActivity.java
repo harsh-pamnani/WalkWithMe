@@ -64,6 +64,9 @@ public class ViewActivity extends AppCompatActivity implements OnMapReadyCallbac
     private static final String URL_START = "https://api.openweathermap.org/data/2.5/forecast?lat=";
     private static final String URL_MID = "&lon=";
     private static final String URL_END = "&appid=c7efb41660082306a3b0fe9ee27f770d";
+
+    //URL to fetch image dynamically from weather API response
+    public static final String OPEN_WEATHER_ICON_URL = "http://openweathermap.org/img/w/";
     String latitude;
     String longitude;
     String weatherDate;
@@ -232,7 +235,8 @@ public class ViewActivity extends AppCompatActivity implements OnMapReadyCallbac
                     JSONArray weather = c.getJSONArray("weather");
                     JSONObject weatherzero = weather.getJSONObject(0);
 
-                    String description = weatherzero.getString("description");
+                    //Fetching icon from the json response which help to display image
+                    String description = weatherzero.getString("icon");
 
                     String sysJson = c.getString("dt_txt");
 
@@ -242,7 +246,8 @@ public class ViewActivity extends AppCompatActivity implements OnMapReadyCallbac
                         int t = (int) (temp - k);
                         temperature.setText(String.valueOf(t) + " " + "°C");
 
-
+                        //Glide library to download image and set to ImageView, append the url above with the icon returned in the weather JSON
+                        Glide.with(ViewActivity.this).load(OPEN_WEATHER_ICON_URL+description+".png").into(icon);
 
                         //switch (description) {
                           //  case "Rain":
