@@ -460,7 +460,7 @@ public class CreateActivity extends AppCompatActivity {
 
         if(uploadImageURL.size()==0) {
             ArrayList<String> defaultArrayList = new ArrayList<String>();
-            defaultArrayList.add("https://firebasestorage.googleapis.com/v0/b/walk-8dfad.appspot.com/o/images%2Fdefault%20image.PNG?alt=media&token=d10d7c46-0ba7-478e-8714-8be69bd66e57");
+            defaultArrayList.add("https://firebasestorage.googleapis.com/v0/b/walk-8dfad.appspot.com/o/images%2Fdefault%20image.PNG?alt=media&token=8d0683a5-48b0-49f5-935f-152d76bee948");
             uploadImageURL = defaultArrayList;
         }
 
