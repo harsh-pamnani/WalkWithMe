@@ -24,10 +24,10 @@ public class Walk {
 
     private Float distanceToUser; //distance in km
 
-    public Walk(double userLatitude, double userLongitude, double latitude, double longitude, String id, String name, String datetime, String location, String imgURL, ArrayList<String> carouselImages,String eventDescription) {
+    public Walk(double userLatitude, double userLongitude, double latitude, double longitude, String id, String name, String date, String time, String location, String imgURL, ArrayList<String> carouselImages,String eventDescription) {
 
         this.eventName = name;
-        this.eventDatetime = datetime;
+        this.eventDatetime = date + " | " + time;
         this.eventLocation = location;
         this.eventImageURL = imgURL;
 
