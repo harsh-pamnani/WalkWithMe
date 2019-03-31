@@ -1,9 +1,12 @@
 package walkwithme.mc.dal.com.walkwithme;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.icu.text.SymbolTable;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -60,6 +63,8 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
+        // Code will execute if there is an internet connectivity
+        if (isNetworkStatusAvialable(getApplicationContext())) {
         Log.d(TAG, "onCreate: entered");
         
         //instantiate the location provider client
@@ -133,8 +138,6 @@ public class HomeActivity extends AppCompatActivity {
 
             }
         });
-
-
         //Create click listener for add button
         addFab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -149,7 +152,24 @@ public class HomeActivity extends AppCompatActivity {
     }
 
 
+        //Toast will populate saying that internet is not availablr
+        else {
+            Toast.makeText(getApplicationContext(), "Internet is not available", Toast.LENGTH_SHORT).show();
 
+        }
+    }
+
+    //Method to check internet connectivity
+    public static boolean isNetworkStatusAvialable(Context context) {
+        ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (connectivityManager != null) {
+            NetworkInfo netInfos = connectivityManager.getActiveNetworkInfo();
+            if (netInfos != null)
+                if (netInfos.isConnected())
+                    return true;
+        }
+        return false;
+    }
     @Override
     protected void onStart() {
         super.onStart();

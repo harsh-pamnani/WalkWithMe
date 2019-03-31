@@ -1,7 +1,10 @@
 package walkwithme.mc.dal.com.walkwithme;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
@@ -11,6 +14,7 @@ import android.util.Log;
 import android.util.TypedValue;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -81,75 +85,78 @@ public class ViewActivity extends AppCompatActivity implements OnMapReadyCallbac
         setContentView(R.layout.activity_view);
 
 
+        if (isNetworkStatusAvialable(getApplicationContext())) {
+            // Intent object passed from Home Activity
+            Intent intent = getIntent();
 
-        // Intent object passed from Home Activity
-        Intent intent = getIntent();
+            //Fetching the resources passed in the  Intent from Home Activity
+            //event = viewActivityJsonObj.saveData(intent.getStringExtra("event"));
+            //pull data from the intent/bundle
+            Bundle dataBundle = getIntent().getBundleExtra("bundle");
 
-        //Fetching the resources passed in the  Intent from Home Activity
-        //event = viewActivityJsonObj.saveData(intent.getStringExtra("event"));
-        //pull data from the intent/bundle
-        Bundle dataBundle = getIntent().getBundleExtra("bundle");
+            //pull data from the bundle which allows for default values.
+            final Integer eventId = dataBundle.getInt("eventID", -1);
+            String eventName = dataBundle.getString("eventName", "N/A");
+            String eventDatetime = dataBundle.getString("eventDatetime", "N/A");
+            eventLocation = dataBundle.getString("eventLocation", "N/A");
+            String eventImageURL = dataBundle.getString("eventImageURL", "N/A");
+            eventCoordinateLang = dataBundle.getDouble("eventCoordinateLang", 0.0);
+            eventCoordinateLong = dataBundle.getDouble("eventCoordinateLong", 0.0);
+            String eventDescription = dataBundle.getString("eventDescription", "N/A");
+            String eventWeather = dataBundle.getString("eventWeather", "N/A");
+            ArrayList<String> eventMultiImageURLs = dataBundle.getStringArrayList("imageLoaderURL");
 
-        //pull data from the bundle which allows for default values.
-        final Integer eventId = dataBundle.getInt("eventID",-1);
-        String eventName = dataBundle.getString("eventName", "N/A");
-        String eventDatetime = dataBundle.getString("eventDatetime", "N/A");
-        eventLocation = dataBundle.getString("eventLocation", "N/A");
-        String eventImageURL = dataBundle.getString("eventImageURL", "N/A");
-        eventCoordinateLang = dataBundle.getDouble("eventCoordinateLang", 0.0);
-        eventCoordinateLong = dataBundle.getDouble("eventCoordinateLong", 0.0);
-        String eventDescription = dataBundle.getString("eventDescription", "N/A");
-        String eventWeather = dataBundle.getString("eventWeather", "N/A");
-        ArrayList<String> eventMultiImageURLs = dataBundle.getStringArrayList("imageLoaderURL");
+            //Fetching required data from JSON Object
+            location = (TextView) findViewById(R.id.location);
+            date = (TextView) findViewById(R.id.date);
+            description = (TextView) findViewById(R.id.description);
+            eventNameView = (TextView) findViewById(R.id.eventNameView);
+            temperature = (TextView) findViewById(R.id.temperature);
+            icon = (ImageView) findViewById(R.id.icon);
 
-        //Fetching required data from JSON Object
-        location = (TextView) findViewById(R.id.location);
-        date = (TextView) findViewById(R.id.date);
-        description = (TextView) findViewById(R.id.description);
-        eventNameView = (TextView) findViewById(R.id.eventNameView);
-        temperature = (TextView) findViewById(R.id.temperature);
-        icon = (ImageView) findViewById(R.id.icon);
+            // Setting the JSON data in the Activity
+            location.setText(eventLocation);
+            date.setText(eventDatetime);
+            description.setText(eventDescription);
+            eventNameView.setText(eventName);
 
-        // Setting the JSON data in the Activity
-        location.setText(eventLocation);
-        date.setText(eventDatetime);
-        description.setText(eventDescription);
-        eventNameView.setText(eventName);
-
-        ViewPager viewPager = findViewById(R.id.view_pager_Image);
-        PagerViewAdapter adapter = new PagerViewAdapter(this, eventMultiImageURLs.toArray(new String[eventMultiImageURLs.size()]));
-        viewPager.setAdapter(adapter);
-
-
-        // Setting the location coordinates in google Map
-        eventLoc = new LatLng(eventCoordinateLang, eventCoordinateLong);
+            ViewPager viewPager = findViewById(R.id.view_pager_Image);
+            PagerViewAdapter adapter = new PagerViewAdapter(this, eventMultiImageURLs.toArray(new String[eventMultiImageURLs.size()]));
+            viewPager.setAdapter(adapter);
 
 
+            // Setting the location coordinates in google Map
+            eventLoc = new LatLng(eventCoordinateLang, eventCoordinateLong);
 
 
+            String strDate = eventDatetime.substring(0, 11);
+            DateFormat format = new SimpleDateFormat("dd/MMM/yyyy");
+            DateFormat newFormat = new SimpleDateFormat("yyyy-MM-dd");
+            String extractedDate = "";
+            try {
+                Date date = format.parse(strDate);
+                extractedDate = newFormat.format(date);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
 
-        String strDate = eventDatetime.substring(0,11);
-        DateFormat format = new SimpleDateFormat("dd/MMM/yyyy");
-        DateFormat newFormat = new SimpleDateFormat("yyyy-MM-dd");
-        String extractedDate = "";
-        try {
-            Date date = format.parse(strDate);
-            extractedDate = newFormat.format(date);
-        } catch (ParseException e) {
-            e.printStackTrace();
+            latitude = String.valueOf(eventCoordinateLang);
+            longitude = String.valueOf(eventCoordinateLong);
+            weatherDate = extractedDate;
+
+            String requestURL = URL_START + latitude + URL_MID + longitude + URL_END;
+            new getWeather().execute(requestURL);
+
+            // Code Snippet From GOOGLE MAP API Doc
+            SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                    .findFragmentById(R.id.map);
+            mapFragment.getMapAsync(this);
         }
 
-        latitude = String.valueOf(eventCoordinateLang);
-        longitude = String.valueOf(eventCoordinateLong);
-        weatherDate = extractedDate;
+        else {
+            Toast.makeText(getApplicationContext(), "Internet is not available", Toast.LENGTH_SHORT).show();
 
-        String requestURL = URL_START + latitude + URL_MID + longitude + URL_END;
-        new getWeather().execute(requestURL);
-
-        // Code Snippet From GOOGLE MAP API Doc
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
+        }
     }
 
 //    // Code to swipe the images in the carousel
@@ -175,6 +182,17 @@ public class ViewActivity extends AppCompatActivity implements OnMapReadyCallbac
         mMap.addMarker(new MarkerOptions().position(eventLoc).title(eventLocation));
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(eventLoc,15));
 
+    }
+
+    public static boolean isNetworkStatusAvialable(Context context) {
+        ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (connectivityManager != null) {
+            NetworkInfo netInfos = connectivityManager.getActiveNetworkInfo();
+            if (netInfos != null)
+                if (netInfos.isConnected())
+                    return true;
+        }
+        return false;
     }
 
     public class getWeather extends AsyncTask<String, String, String> {
