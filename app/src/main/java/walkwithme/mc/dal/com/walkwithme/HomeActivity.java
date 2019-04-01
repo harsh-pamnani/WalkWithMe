@@ -144,7 +144,7 @@ public class HomeActivity extends AppCompatActivity {
             public void onClick(View view) {
 
                 // Intent creation for CREATE Activity
-                Intent createIntent= new Intent(HomeActivity.this, CreateActivity.class);
+                Intent createIntent= new Intent(HomeActivity.this, LoginActivity.class);
                 startActivity(createIntent);
             }
         });

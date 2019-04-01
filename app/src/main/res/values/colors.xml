@@ -6,4 +6,6 @@
     <color name="colorTheme">#3498db</color>
     <color name="colorPartitionViewGrey">#D3D3D3</color>
     <color name="colorBlueLabelView">#2884e0</color>
+    <color name="colorWhite">#FFFFFF</color>
+    <color name="colorGrey">#C3C3C3</color>
 </resources>

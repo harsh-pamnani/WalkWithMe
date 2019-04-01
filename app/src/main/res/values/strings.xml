@@ -2,4 +2,10 @@
     <string name="app_name">WalkWithMe</string>
     <string name="google_maps_key">AIzaSyASvOV-xAPAml7RN-R4vLvttHs2t6-AziU</string>
     <string name="home_title">Home View</string>
+    <string name="enter_your_phone_number">Enter your phone number</string>
+    <string name="enter_your_password">Enter your password</string>
+    <string name="log_in">Log-In</string>
+    <string name="skip_for_now">Skip For Now</string>
+    <string name="create_a_new_account">Create a new account</string>
+    <string name="or">OR</string>
 </resources>
