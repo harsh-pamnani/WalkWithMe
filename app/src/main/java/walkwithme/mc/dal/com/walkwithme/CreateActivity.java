@@ -243,6 +243,15 @@ public class CreateActivity extends AppCompatActivity {
             }
         });
 
+        edittime.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(!hasFocus) {
+                    setTimeError();
+                }
+            }
+        });
+
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
