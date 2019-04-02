@@ -273,8 +273,10 @@ public class CreateActivity extends AppCompatActivity {
                     alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK!",
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
-                                    Intent createIntent= new Intent(CreateActivity.this, HomeActivity.class);
-                                    startActivity(createIntent);
+//                                    Intent createIntent= new Intent(CreateActivity.this, HomeActivity.class);
+//                                    startActivity(createIntent);
+                                      //finish() to terminate intent instead of new intent so that onCreate is not called again in HomeActivity
+                                      finish();
                                 }
                             });
 

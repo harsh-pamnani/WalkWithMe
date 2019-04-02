@@ -65,111 +65,107 @@ public class HomeActivity extends AppCompatActivity {
 
         // Code will execute if there is an internet connectivity
         if (isNetworkStatusAvialable(getApplicationContext())) {
-        Log.d(TAG, "onCreate: entered");
-        
-        //instantiate the location provider client
-        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+            Log.d(TAG, "onCreate: entered");
 
-        getLocationPermission();
+            //instantiate the location provider client
+            mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+
+            //get the location permissions, if they do not exists prompt them
+            getLocationPermission();
 
 
-        // Get walk data from the firebase database
-        final FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference ref = database.getReference("WALK_DATA");
+            // Get walk data from the firebase database
+            final FirebaseDatabase database = FirebaseDatabase.getInstance();
+            DatabaseReference ref = database.getReference("WALK_DATA");
 
-        // Listner to monitor the changes in the firebase node.
-        ref.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                Log.d(TAG, "onDataChange: Data located through event listener");
-                Iterator<DataSnapshot> it =  dataSnapshot.getChildren().iterator();
-                while(it.hasNext()){
-                    CreateActivityForm walkDat = it.next().getValue(CreateActivityForm.class);
+            // Listener to monitor the changes in the firebase node.
+            // If new event exists, all walks are returned again.
+            ref.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    Log.d(TAG, "onDataChange: Data located through event listener");
 
-                    walkArrayList.add(new Walk(currentLatitude, currentLongitude, walkDat.latitude, walkDat.longitude, walkDat.id, walkDat.title, walkDat.date, walkDat.time ,walkDat.location, walkDat.imageURL.get(0),walkDat.imageURL,walkDat.description));
+                    //Refresh the walkArray list to ensure no duplicates
+                    walkArrayList = new ArrayList<>();
+
+                    Iterator<DataSnapshot> it = dataSnapshot.getChildren().iterator();
+                    while (it.hasNext()) {
+                        CreateActivityForm walkDat = it.next().getValue(CreateActivityForm.class);
+
+                        //add each walk to the walkArrayList
+                        walkArrayList.add(new Walk(currentLatitude, currentLongitude, walkDat.latitude, walkDat.longitude, walkDat.id, walkDat.title, walkDat.date, walkDat.time, walkDat.location, walkDat.imageURL.get(0), walkDat.imageURL, walkDat.description));
+
+                    }
+
+                    Log.d(TAG, "onDataChange: [" + currentLatitude + "," + currentLongitude + "]");
+
+                    //if the GPS coordinates have been found, sort, otherwise display as-is
+                    if (gpsCoordinatesFound) {
+                        displayList(true);
+                    } else {
+                        displayList(false);
+                    }
 
                 }
 
-                if(gpsCoordinatesFound){
-                    displayList(true);
-                }else{
-                    displayList(false);
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                    System.out.println("The read failed: " + databaseError.getCode());
+                    Toast.makeText(getApplicationContext(), "Oops! Error Occured while fetchig data.", Toast.LENGTH_LONG).show();
                 }
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                System.out.println("The read failed: " + databaseError.getCode());
-                Toast.makeText(getApplicationContext(),"Oops! Error Occured while fetchig data.", Toast.LENGTH_LONG).show();
-            }
-        });
+            });
 
 
-        walkList = findViewById(R.id.list_walks);
-        addFab =   findViewById(R.id.addFab);
+            walkList = findViewById(R.id.list_walks);
+            addFab = findViewById(R.id.addFab);
 
-        //OnClickListener if one of the list items is clicked
-        walkList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int i, long id) {
+            //OnClickListener if one of the list items is clicked
+            walkList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int i, long id) {
 
-                //create intent and bundle for View Activity
-                Intent viewIntent= new Intent(HomeActivity.this, ViewActivity.class);
-                Bundle viewBundle = new Bundle();
+                    //create intent and bundle for View Activity
+                    Intent viewIntent = new Intent(HomeActivity.this, ViewActivity.class);
+                    Bundle viewBundle = new Bundle();
 
-                //put the rest into a bundle so that we can use default values if required
-                viewBundle.putString("eventId", walkArrayList.get(i).getEventId());
-                viewBundle.putString("eventName", walkArrayList.get(i).getEventName());
-                viewBundle.putString("eventDatetime", walkArrayList.get(i).getEventDatetime());
-                viewBundle.putString("eventLocation", walkArrayList.get(i).getEventLocation());
-                viewBundle.putString("eventImageURL", walkArrayList.get(i).getEventImageURL());
-                viewBundle.putDouble("eventCoordinateLang", walkArrayList.get(i).getEventCoordinateLat());
-                viewBundle.putDouble("eventCoordinateLong", walkArrayList.get(i).getEventCoordinateLong());
-                viewBundle.putString("eventDescription", walkArrayList.get(i).getEventDescription());
-                viewBundle.putString("eventWeather", walkArrayList.get(i).getEventWeather());
-                viewBundle.putStringArrayList("imageLoaderURL", walkArrayList.get(i).getCarouselImages());
+                    //put the rest into a bundle so that we can use default values if required
+                    viewBundle.putString("eventId", walkArrayList.get(i).getEventId());
+                    viewBundle.putString("eventName", walkArrayList.get(i).getEventName());
+                    viewBundle.putString("eventDatetime", walkArrayList.get(i).getEventDatetime());
+                    viewBundle.putString("eventLocation", walkArrayList.get(i).getEventLocation());
+                    viewBundle.putString("eventImageURL", walkArrayList.get(i).getEventImageURL());
+                    viewBundle.putDouble("eventCoordinateLang", walkArrayList.get(i).getEventCoordinateLat());
+                    viewBundle.putDouble("eventCoordinateLong", walkArrayList.get(i).getEventCoordinateLong());
+                    viewBundle.putString("eventDescription", walkArrayList.get(i).getEventDescription());
+                    viewBundle.putString("eventWeather", walkArrayList.get(i).getEventWeather());
+                    viewBundle.putStringArrayList("imageLoaderURL", walkArrayList.get(i).getCarouselImages());
 
-                //add bundle to intent
-                viewIntent.putExtra("bundle", viewBundle);
+                    //add bundle to intent
+                    viewIntent.putExtra("bundle", viewBundle);
 
-                //start activity with intent information
-                startActivity(viewIntent);
+                    //start activity with intent information
+                    startActivity(viewIntent);
 
-            }
-        });
-        //Create click listener for add button
-        addFab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+                }
+            });
+            //Create click listener for add button
+            addFab.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
 
-                // Intent creation for CREATE Activity
-                Intent createIntent= new Intent(HomeActivity.this, CreateActivity.class);
-                startActivity(createIntent);
-            }
-        });
+                    // Intent creation for CREATE Activity
+                    Intent createIntent = new Intent(HomeActivity.this, CreateActivity.class);
+                    startActivity(createIntent);
+                }
+            });
 
-    }
-
-
-        //Toast will populate saying that internet is not availablr
-        else {
+        //Toast will populate saying that internet is not available
+        }else {
             Toast.makeText(getApplicationContext(), "Internet is not available", Toast.LENGTH_SHORT).show();
-
         }
     }
 
-    //Method to check internet connectivity
-    public static boolean isNetworkStatusAvialable(Context context) {
-        ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        if (connectivityManager != null) {
-            NetworkInfo netInfos = connectivityManager.getActiveNetworkInfo();
-            if (netInfos != null)
-                if (netInfos.isConnected())
-                    return true;
-        }
-        return false;
-    }
+
     @Override
     protected void onStart() {
         super.onStart();
@@ -198,6 +194,17 @@ public class HomeActivity extends AppCompatActivity {
         }
     }
 
+    //Method to check internet connectivity
+    public static boolean isNetworkStatusAvialable(Context context) {
+        ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (connectivityManager != null) {
+            NetworkInfo netInfos = connectivityManager.getActiveNetworkInfo();
+            if (netInfos != null)
+                if (netInfos.isConnected())
+                    return true;
+        }
+        return false;
+    }
 
     /**
      * Checks if Location permission has been granted in the past
