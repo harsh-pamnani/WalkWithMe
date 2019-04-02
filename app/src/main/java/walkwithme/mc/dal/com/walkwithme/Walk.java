@@ -2,33 +2,43 @@ package walkwithme.mc.dal.com.walkwithme;
 
 import android.location.Location;
 
+import java.util.ArrayList;
+
 public class Walk {
     //Elements used for the Home Screen
     private String eventName;
     private String eventDatetime;
     private String eventLocation;
     private String eventImageURL;
+
+    public Walk() {
+    }
+
     //Remaining elements for Create and View Activity
-    private int eventId;
+    private String eventId;
     private Double eventCoordinateLat;
     private Double eventCoordinateLong;
     private String eventDescription;
     private String eventWeather;
+    private ArrayList<String> carouselImages;
 
     private Float distanceToUser; //distance in km
 
-    public Walk(double userLatitude, double userLongitude, double latitude, double longitude, Integer id, String name, String datetime, String location, String imgURL) {
+    public Walk(double userLatitude, double userLongitude, double latitude, double longitude, String id, String name, String date, String time, String location, String imgURL, ArrayList<String> carouselImages,String eventDescription) {
 
         this.eventName = name;
-        this.eventDatetime = datetime;
+        this.eventDatetime = date + " | " + time;
         this.eventLocation = location;
         this.eventImageURL = imgURL;
 
         this.eventId = id;
         this.eventCoordinateLat = latitude;
         this.eventCoordinateLong = longitude;
-        this.eventDescription = "";
+
+        this.eventDescription = eventDescription;
         this.eventWeather = "";
+        this.carouselImages = carouselImages;
+
 
         this.distanceToUser = calculateDistance(userLatitude, userLongitude, latitude, longitude);
 
@@ -86,11 +96,11 @@ public class Walk {
         this.eventImageURL = eventImageURL;
     }
 
-    public int getEventId() {
+    public String getEventId() {
         return eventId;
     }
 
-    public void setEventId(int eventId) {
+    public void setEventId(String eventId) {
         this.eventId = eventId;
     }
 
@@ -114,6 +124,14 @@ public class Walk {
         return eventDescription;
     }
 
+    public ArrayList<String> getCarouselImages() {
+        return carouselImages;
+    }
+
+    public void setCarouselImages(ArrayList<String> carouselImages) {
+        this.carouselImages = carouselImages;
+    }
+
     public void setEventDescription(String eventDescription) {
         this.eventDescription = eventDescription;
     }
@@ -133,6 +151,9 @@ public class Walk {
     public void setDistanceToUser(Float distanceToUser) {
         this.distanceToUser = distanceToUser;
     }
+
+
+
 }
 
 
