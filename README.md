@@ -71,6 +71,59 @@ public static int fibonacci(int fibIndex) {
 // Source: Wikipedia Java [1]
 ```
 
+**Problem 3: Bypassing Location Permissions**
+
+One of the roadblocks encountered during testing was that we were able to bypass location permission settings on the emulator but not on a physical device. The method call to retrieve the last known location was continuously declined and resulted in some confusion. We consulted the Android Developers guide to learn more about permission settings and requirements [u1]. A solution was found using the Android Developer permission training documentation [u2] which allowed us to both check and prompt a permission system dialog box.
+```
+private void getLocationPermission(){
+    // If permission is not granted
+    if(ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+        != PackageManager.PERMISSION_GRANTED){
+        
+        //request the location permission by displaying a system dialog
+        ActivityCompat.requestPermissions(this,
+            new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+            PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
+    
+            // Result determined in onRequestPermissionResult
+    
+    //else permission is granted (or has been granted in the past)
+    }else{
+        mLocationPermissionGranted = true;
+        //call method that gets last known location
+        getLastLocation();
+    }
+}        
+// Source: "Request App Permission", Android Developer Doc [u2]
+```
+The permission request response is then handled in the onRequestPermissionResult method. If the request is cancelled/denied, the result arrays are empty.
+```
+@Override
+public void onRequestPermissionsResult(int requestCode,
+            @NonNull String permissions[], @NonNull int[] grantResults) {
+    switch (requestCode) {
+        case PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION: {
+            
+            // If request has been granted
+            if (grantResults.length > 0
+                 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                mLocationPermissionGranted = true;
+                // permission was granted! Do the
+                // location-related task you need to do.
+
+            //else if the request has been denied
+            }else{
+                
+                mLocationPermissionGranted = false;
+                // permission denied, boo! Disable the
+                // functionality that depends on this permission.
+            }
+        }
+    }
+}
+// Source: "Request App Permission", Android Developer Doc [u2]
+```
 
 ## Feature Section
 List all the main features of your application with a brief description of each feature.
@@ -127,7 +180,7 @@ The next steps in this project if it were to continue would include the followin
 
 #### Research Material:
 
-[] “Request App Permissions,” Android Developer Docs, 2019. [Online]. Available: https://developer.android.com/training/permissions/requesting.html.
+[u2] “Request App Permissions,” Android Developer Docs, 2019. [Online]. Available: https://developer.android.com/training/permissions/requesting.html.
 
 [] “App permissions best practices,” Android Developer Docs, 2019. [Online]. Available: https://developer.android.com/training/permissions/usage-notes.
 
@@ -143,7 +196,7 @@ The next steps in this project if it were to continue would include the followin
 
 [] “Understand the Activity Lifecycle,” Android Developer Docs, 2019. [Online]. Available: https://developer.android.com/guide/components/activities/activity-lifecycle.
 
-[] “Permissions overview,” Android Developer Docs, 2019. [Online]. Available: https://developer.android.com/guide/topics/permissions/overview.
+[u1] “Permissions overview,” Android Developer Docs, 2019. [Online]. Available: https://developer.android.com/guide/topics/permissions/overview.
 
 [] “Location strategies,” Android Developer Docs, 2019. [Online]. Available: https://developer.android.com/guide/topics/location/strategies.
 
