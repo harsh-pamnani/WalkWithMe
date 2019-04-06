@@ -7,8 +7,8 @@ Team Tech Intellect:
 | Name              | Student ID    | E-mail |
 | ------            | ------        | ------ |
 | Aniruddha Chitley | B00808320     | @dal.ca |
-| Deep Shah         | B00796368     | @dal.ca |
-| Harsh Pamnani     | B00802614     | @dal.ca |
+| Deep Shah         | B00796368     | dp371796@dal.ca |
+| Harsh Pamnani     | B00802614     | hr340096@dal.ca |
 | Nitish Bhardwaj   | B00811535     | @dal.ca |
 | Ueli Haltner      | B00526617     | Ueli.Haltner@dal.ca |
 
@@ -37,20 +37,48 @@ You will encounter roadblocks and problems while developing your project. Share 
 
 **Problem 1: AutoComplete API allowed us to select locations but did not return the coordinates**
 
-A short description.
-```
-// The method we implemented that solved our problem
-public static int fibonacci(int fibIndex) {
-    if (memoized.containsKey(fibIndex)) {
-        return memoized.get(fibIndex);
-    } else {
-        int answer = fibonacci(fibIndex - 1) + fibonacci(fibIndex - 2);
-        memoized.put(fibIndex, answer);
-        return answer;
-    }
-}
+After selecting the place from Places Autocomplete API, the Place object was returning only Place ID and Place Name for that place. However, we wanted to get Latitude and Longitude as well, because on the “View Event” page the activities will be sorted based on the location nearest to the user. But, the Autocomplete API was returning null for all values except Id and Name. This is the limitation of Place Autocomplete API. To solve this problem, we are making a second call to Places API by passing the Place ID. The places API returns every detail for that Place. From this response, we took latitude and longitude and stored it in the Walk object. Hence, now the “View Event” page will have access to Latitude and Longitude, and it can sort the data based on the nearest location. Following is the sample from the code:
 
-// Source: Wikipedia Java [1]
+```
+public static final String URL_START = "https://maps.googleapis.com/maps/api/place/details/json?placeid=";
+public static final String URL_END = "&key=AIzaSyCVRI6McPgJ6ZLD3OXZwgtDeFcHH7qByaQ";
+
+private void getLatLngOfPlace() {
+		// Adding the placeId to the URL for place API call
+        String requestURL = URL_START + placeId + URL_END;
+
+        RequestQueue queue = Volley.newRequestQueue(this);
+
+		// Creating a new JsonObjectRequest
+        JsonObjectRequest getRequest = new JsonObjectRequest(Request.Method.GET, requestURL, null,
+                new Response.Listener<JSONObject>()
+                {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        // display response
+                        try {
+                            JSONObject result = response.getJSONObject("result");
+                            JSONObject geometry = result.getJSONObject("geometry");
+                            JSONObject location = geometry.getJSONObject("location");
+                            latitude = location.getDouble("lat");
+                            longitude = location.getDouble("lng");
+                        } catch (JSONException e) {
+                            Log.i(LOG_TAG, e.getMessage());
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener()
+                {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.d(LOG_TAG, error.toString());
+                    }
+                }
+        );
+
+        queue.add(getRequest);
+}
 ```
 
 **Problem 2: Images could not be stored alongside text data in the Firebase database**
