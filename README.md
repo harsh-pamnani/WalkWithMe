@@ -9,7 +9,7 @@ Team Tech Intellect:
 | Aniruddha Chitley | B00808320     | aniruddha.chitley@dal.ca |
 | Deep Shah         | B00796368     | dp371796@dal.ca |
 | Harsh Pamnani     | B00802614     | hr340096@dal.ca |
-| Nitish Bhardwaj   | B00811535     | @dal.ca |
+| Nitish Bhardwaj   | B00811535     | nitish_bhardwaj@dal.ca |
 | Ueli Haltner      | B00526617     | Ueli.Haltner@dal.ca |
 
 Git repository location: [GitLab/WalkWithMe](https://git.cs.dal.ca/chitley/walkwithme)
@@ -21,7 +21,9 @@ WalkWithMe is a platform where users can find and create nearby walking groups i
 The home page will display numerous walking events happening near the user. The application fetches all the nearby events and sorts it according to the distance from the user. A round button on the home page allows the user to create a new event. To promote a minimalistic and user-friendly design, we will not ask the user for any log-in credentials at this time. As soon as the user clicks any specific event, it will direct them to a new view where the event is mentioned in greater detail along with its location in Google Maps.
 
 **View Event Page:** 
-@Nitish
+Once users select a specific event on the Home page, the system redirects them to the View Event page. This page displays the details of the event selected by the user. The details include the image of the event, name, date, location, and description. The location of the event is also displayed on the map. Once the user clicks on the location, they are asked to open the exact location in Google Maps. The user can make use of the location features to understand the exact venue details of the event. 
+The minimalistic design approach is followed in designing the page. The user can easily go back to the home page using the Android inbuilt back button.
+
 
 **Create Event Page:** Users can create walking events. The event includes details about the meeting point, date and time of the event, and a description. Also, user can upload the image of the location. The description will allow a user to express in more detail the route, visited landmarks, the type of people they are looking for, and the targeted length of the walk.
 
@@ -51,7 +53,7 @@ Volley library helps the devleopers to make networking for the mobile applicatio
 @Nitish/@Aniruddha Please add description here.
 
 **Picasso (v.):**
-@Nitish/@Aniruddha Please add description here.
+Picasso allows hassle-free image load to the application from a URL. Source [here](https://square.github.io/picasso/) 
 
 ...
 
@@ -197,11 +199,10 @@ Following are the main features of our application.
 **Camera/Gallery Access:** This feature facilitates a user to upload the image of the location where the event is taking place. The user can click photo by accessing their camera. Also, users can upload the picture from their Gallery which will be displayed when the user tries to view the event. 
 
 **Map access on View event page:**
-@Nitish/@Aniruddha Please add description here.
+Users are shown the location of the event as text as well as on the map. Google maps[N1] are a great way to display the location. The user can click on the google maps embedded to the application to be redirected to the main Google Navigation system.
 
 **Carousel view for multiple images:**
-@Nitish/@Aniruddha Please add description here.
-...
+Using the carousel view[N2, N3] users can view multiple images related to the event by swiping on the images from left to right or vice-versa. The view is created to be intuitive and user-friendly to ensure that user can perceive more information with less stress.
 
 ## Final Project Status
 
@@ -244,9 +245,15 @@ The next steps in this project if it were to continue would include the followin
 
 [] D. Nugent, “How to get current Location in GoogleMap using FusedLocationProviderClient”, Stack Overflow, 9-Jul-2017. [Online]. Available: https://stackoverflow.com/questions/44992014/how-to-get-current-location-in-googlemap-using-fusedlocationproviderclient.
 
+[N2] H. Parsania, "Android Image Slider From URL | Fetch Image From Server URL", DemoNuts, 2019. [Online]. Available: https://demonuts.com/android-image-slider-from-url/. [Accessed: 28- Mar- 2019].
+
+[N3] Codepath [Online]. Available: https://guides.codepath.com/android/Displaying-Images-with-the-Picasso-Library. [Accessed: 29- Mar- 2019].
+
 #### Android Libraries:
 
 [] S.Tarasevich, “Universal Image Loader Library,” GitHub.com, 26-Jan-2016. [Online]. Available: https://github.com/nostra13/Android-Universal-Image-Loader.
+
+[N1] "Google Maps Platform  |  Google Developers", Google Developers, 2019. [Online]. Available: https://developers.google.com/maps/documentation/. [Accessed: 01- Apr- 2019].
 
 #### Research Material:
 
