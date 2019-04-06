@@ -29,6 +29,10 @@ The minimalistic design approach is followed in designing the page. The user can
 
 **Create Event Page:** Users can create walking events. The event includes details about the meeting point, date and time of the event, and a description. Also, user can upload the image of the location. The description will allow a user to express in more detail the route, visited landmarks, the type of people they are looking for, and the targeted length of the walk.
 
+<p style= " text-align:center">
+  <img width="350" height="600" src="https://firebasestorage.googleapis.com/v0/b/walk-8dfad.appspot.com/o/images%2FCreate_Activity.jpeg?alt=media&token=8ddf423d-0259-42cb-ab1e-002e9ce54852">
+</p>
+
 ## Libraries
 **Google Services Location:** 
 This library is part of the Google Play Services Location API (v.16.0.0) and allows the last known location of the user’s device to be retrieved. The location is determined using both GPS and Android's Network Location Provider. Source [here](https://developer.android.com/training/location/retrieve-current)
