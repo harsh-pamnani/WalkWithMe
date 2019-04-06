@@ -58,11 +58,11 @@ Volley library helps the devleopers to make networking for the mobile applicatio
 ## Installation Notes
 Installation instructions for markers.
 
-OS Requirements         :  Android API level 23 (Android 6.0 Marshmallow)
-Android Studio Version  :  3.2.1
-Gradle Version          :  3.2.1
-There are no extra dependencies for this application. We are using libraries, which have been included in the build.gradle file.
-...
+**OS Requirements         :**  Android API level 23 (Android 6.0 Marshmallow)
+**Android Studio Version  :**  3.2.1
+**Gradle Version          :**  3.2.1
+
+**There are no extra dependencies for this application. We are using libraries, which have been included in the build.gradle file.
 
 ## Code Examples
 You will encounter roadblocks and problems while developing your project. Share 2-3 'problems' that your team solved while developing your project. Write a few sentences that describe your solution and provide a code snippet/block that shows your solution. Example:
