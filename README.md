@@ -20,17 +20,22 @@ WalkWithMe is a platform where users can find and create nearby walking groups i
 **Home Page:** 
 The home page will display numerous walking events happening near the user. The application fetches all the nearby events and sorts it according to the distance from the user. A round button on the home page allows the user to create a new event. To promote a minimalistic and user-friendly design, we will not ask the user for any log-in credentials at this time. As soon as the user clicks any specific event, it will direct them to a new view where the event is mentioned in greater detail along with its location in Google Maps.
 
-![](https://firebasestorage.googleapis.com/v0/b/walk-8dfad.appspot.com/o/images%2FCreate_Activity.jpeg?alt=media&token=8ddf423d-0259-42cb-ab1e-002e9ce54852?raw=true)
+<p style= " text-align:center">
+  <img width="330" height="600" src="https://firebasestorage.googleapis.com/v0/b/walk-8dfad.appspot.com/o/images%2FHome_Activity.jpeg?alt=media&token=0a53d52f-8c3f-4c75-af0a-8a378dcb9b00" alt="Home Screen">
+</p>
 
 **View Event Page:** 
 Once users select a specific event on the Home page, the system redirects them to the View Event page. This page displays the details of the event selected by the user. The details include the image of the event, name, date, location, and description. The location of the event is also displayed on the map. Once the user clicks on the location, they are asked to open the exact location in Google Maps. The user can make use of the location features to understand the exact venue details of the event. 
 The minimalistic design approach is followed in designing the page. The user can easily go back to the home page using the Android inbuilt back button.
 
+<p style= " text-align:center">
+  <img width="330" height="600" src="https://firebasestorage.googleapis.com/v0/b/walk-8dfad.appspot.com/o/images%2FView_Activity.jpeg?alt=media&token=5c3abc5e-eaec-4a91-ba36-2216b2b08e68" alt="View Screen">
+</p>
 
 **Create Event Page:** Users can create walking events. The event includes details about the meeting point, date and time of the event, and a description. Also, user can upload the image of the location. The description will allow a user to express in more detail the route, visited landmarks, the type of people they are looking for, and the targeted length of the walk.
 
 <p style= " text-align:center">
-  <img width="350" height="600" src="https://firebasestorage.googleapis.com/v0/b/walk-8dfad.appspot.com/o/images%2FCreate_Activity.jpeg?alt=media&token=8ddf423d-0259-42cb-ab1e-002e9ce54852">
+  <img width="350" height="600" src="https://firebasestorage.googleapis.com/v0/b/walk-8dfad.appspot.com/o/images%2FCreate_Activity.jpeg?alt=media&token=8ddf423d-0259-42cb-ab1e-002e9ce54852" alt="Create Screen">
 </p>
 
 ## Libraries
