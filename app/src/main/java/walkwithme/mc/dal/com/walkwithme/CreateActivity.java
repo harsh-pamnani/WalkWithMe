@@ -4,14 +4,11 @@ import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
-import android.content.ClipData;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -21,13 +18,10 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -50,12 +44,10 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.gms.common.api.Status;
-import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.model.Place;
-import com.google.android.libraries.places.api.net.PlacesClient;
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
 import com.google.firebase.database.DatabaseReference;
@@ -64,18 +56,18 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-import com.google.gson.JsonObject;
-import com.nostra13.universalimageloader.utils.L;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 public class CreateActivity extends AppCompatActivity {
 
+    // Constants for the class
     public static final String LOG_TAG = "HP";
     public static final String URL_START = "https://maps.googleapis.com/maps/api/place/details/json?placeid=";
     public static final String URL_END = "&key=AIzaSyCVRI6McPgJ6ZLD3OXZwgtDeFcHH7qByaQ";
 
+    // Declaring all the variables for UI elements
     ImageView photoImageView;
     Integer REQUEST_CAMERA=1, SELECT_FILE=0;
 
@@ -90,7 +82,6 @@ public class CreateActivity extends AppCompatActivity {
 
     StorageReference ref;
     ArrayList<String> firebaseUploadedImagesURLs = new ArrayList<String>();
-    ArrayList<Uri> imageURIs = new ArrayList<Uri>();
 
     FirebaseDatabase firebaseDatabase;
     DatabaseReference fireBaseAuth;
@@ -101,6 +92,7 @@ public class CreateActivity extends AppCompatActivity {
     private Uri filePath;
     String titleForImage;
 
+    // For storing latitude and longitude
     double latitude, longitude;
 
     Runnable runnable;
@@ -110,19 +102,19 @@ public class CreateActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create);
 
-        //FirebaseApp.initializeApp(CreateActivity.this);
-        // Creating the instance of firebase Database
+        // Initializing the firebase database
         firebaseDatabase = FirebaseDatabase.getInstance();
         fireBaseAuth = firebaseDatabase.getReference("WALK_DATA");
 
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference();
 
-
+        // Closing the soft keyboard when the screen is launched
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
         findViewById(R.id.scrollView).requestFocus();
 
+        // Finding all the elements from UI
         titleEditText = findViewById(R.id.lblTitleEdit);
         myCalendar = Calendar.getInstance();
         dateEditText = findViewById(R.id.lblDateEdit);
@@ -133,9 +125,8 @@ public class CreateActivity extends AppCompatActivity {
         eventLocationView = findViewById(R.id.event_location_view);
         desctiptionEditText = findViewById(R.id.lblDescriptionEdit);
 
+        // Initializing the Places object using API key
         Places.initialize(getApplicationContext(), "AIzaSyCVRI6McPgJ6ZLD3OXZwgtDeFcHH7qByaQ");
-
-        PlacesClient placesClient = Places.createClient(this);
 
         if (!Places.isInitialized()) {
             Places.initialize(getApplicationContext(), "AIzaSyCVRI6McPgJ6ZLD3OXZwgtDeFcHH7qByaQ");
@@ -148,6 +139,7 @@ public class CreateActivity extends AppCompatActivity {
 
         autocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME));
 
+        // Place autocomplete listener for Google Places API integration
         autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
             public void onPlaceSelected(Place place) {
@@ -178,6 +170,7 @@ public class CreateActivity extends AppCompatActivity {
             }
         });
 
+        // OnClick event for upload button
         photoUploadButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -190,6 +183,7 @@ public class CreateActivity extends AppCompatActivity {
             }
         });
 
+        // Implementing Set Listener when date is changed.
         final DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear,
@@ -202,15 +196,17 @@ public class CreateActivity extends AppCompatActivity {
             }
         };
 
+        // Setting the event title error
         titleEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if(!hasFocus) {
-                    setVenueError();
+                    setTitleError();
                 }
             }
         });
 
+        // Implementing date picker
         dateEditText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -221,6 +217,7 @@ public class CreateActivity extends AppCompatActivity {
             }
         });
 
+        // Implementing time picker
         edittime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -234,6 +231,7 @@ public class CreateActivity extends AppCompatActivity {
             }
         });
 
+        // Setting date error
         dateEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
@@ -243,6 +241,7 @@ public class CreateActivity extends AppCompatActivity {
             }
         });
 
+        // Setting time error
         edittime.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
@@ -252,29 +251,34 @@ public class CreateActivity extends AppCompatActivity {
             }
         });
 
+        // OnClick event listener when submit button is pressed
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setVenueError();
+                // Check all the fields validation before submitting the event
+                setTitleError();
                 setDateError();
                 setTimeError();
 
+                // Getting error
                 CharSequence titleError = titleEditText.getError();
                 CharSequence dateError = dateEditText.getError();
                 CharSequence timeError = edittime.getError();
 
+                // If all the errros are null, then only proceed further
                 if(titleError==null && dateError==null && timeError==null) {
+                    // Submitting the event date to firebase
                     prepareFormDataforFirebase();
 
+                    // Alert box for event submission
                     AlertDialog alertDialog = new AlertDialog.Builder(CreateActivity.this).create(); //Read Update
                     alertDialog.setTitle("Event Submitted.");
                     alertDialog.setMessage("Your event has been submitted successfully. \n\nGo back to home page.");
 
+                    // Displaying "OK" button for going back to home screen
                     alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK!",
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
-//                                    Intent createIntent= new Intent(CreateActivity.this, HomeActivity.class);
-//                                    startActivity(createIntent);
                                       //finish() to terminate intent instead of new intent so that onCreate is not called again in HomeActivity
                                       finish();
                                 }
@@ -282,6 +286,7 @@ public class CreateActivity extends AppCompatActivity {
 
                     alertDialog.show();
                 } else {
+                    // Displaying the toast if any of the field validations fail
                     Toast toast = Toast.makeText(getApplicationContext(), "Rectify the errors before submitting the form", Toast.LENGTH_SHORT);;
                     toast.show();
                 }
@@ -289,11 +294,14 @@ public class CreateActivity extends AppCompatActivity {
         });
     }
 
+    // Method to get latitude and longitude of the place
     private void getLatLngOfPlace() {
+        // Request URL for places API
         String requestURL = URL_START + placeId + URL_END;
 
         RequestQueue queue = Volley.newRequestQueue(this);
 
+        // Creating the JsonObjectRequest for the given URL
         JsonObjectRequest getRequest = new JsonObjectRequest(Request.Method.GET, requestURL, null,
                 new Response.Listener<JSONObject>()
                 {
@@ -301,12 +309,14 @@ public class CreateActivity extends AppCompatActivity {
                     public void onResponse(JSONObject response) {
                         // display response
                         try {
+                            // Getting teh latitude and longitude from the response
                             JSONObject result = response.getJSONObject("result");
                             JSONObject geometry = result.getJSONObject("geometry");
                             JSONObject location = geometry.getJSONObject("location");
                             latitude = location.getDouble("lat");
                             longitude = location.getDouble("lng");
                         } catch (JSONException e) {
+                            // Catching the exception
                             Log.i(LOG_TAG, e.getMessage());
                             e.printStackTrace();
                         }
@@ -324,20 +334,25 @@ public class CreateActivity extends AppCompatActivity {
         queue.add(getRequest);
     }
 
+    // Method for uploading image to firebase
     private void uploadImage() {
+        // Checking file path of image is not null
         if(filePath != null) {
+            // Showing progress bar for upload
             final ProgressDialog progressDialog = new ProgressDialog(this);
             progressDialog.setTitle("Uploading...");
             progressDialog.show();
 
-
+            // Getting the reference for the firebase storage of images
             ref = storageReference.child("images/"+ titleForImage + ";" + UUID.randomUUID().toString());
 
+            // Uploading the given file to firebase storage
             ref.putFile(filePath)
                     .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        // Listener when image is successfully uploaded
                         @Override
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-
+                            // Getting the URL of uploade image
                             ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                                 @Override
                                 public void onSuccess(Uri uri) {
@@ -346,13 +361,17 @@ public class CreateActivity extends AppCompatActivity {
                                 }
                             });
 
+                            // Cancelling the dialog for upload
                             progressDialog.dismiss();
+
+                            // Displaying Toast for image uploaded
                             Toast.makeText(CreateActivity.this, "Uploaded", Toast.LENGTH_SHORT).show();
                         }
                     })
                     .addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
+                            // Listener when image upload fails
                             progressDialog.dismiss();
                             Toast.makeText(CreateActivity.this, "Failed "+e.getMessage(), Toast.LENGTH_SHORT).show();
                         }
@@ -360,6 +379,7 @@ public class CreateActivity extends AppCompatActivity {
                     .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
                         @Override
                         public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+                            // Listener when the image is being uploaded to show the progress bar
                             double progress = (100.0*taskSnapshot.getBytesTransferred()/taskSnapshot
                                     .getTotalByteCount());
                             progressDialog.setMessage("Uploaded "+(int)progress+"%");
@@ -369,6 +389,7 @@ public class CreateActivity extends AppCompatActivity {
         }
     }
 
+    // Method for setting the error for Time field
     private void setTimeError() {
         if (TextUtils.isEmpty(edittime.getText())) {
             edittime.setError("Time can not be empty");
@@ -377,7 +398,8 @@ public class CreateActivity extends AppCompatActivity {
         }
     }
 
-    private void setVenueError() {
+    // Method for setting the error for Title field
+    private void setTitleError() {
         if (TextUtils.isEmpty(titleEditText.getText()) || titleEditText.getText().length() < 10) {
             titleEditText.setError("Title can not be less than 10 characters");
         } else {
@@ -385,12 +407,15 @@ public class CreateActivity extends AppCompatActivity {
         }
     }
 
+    // Method for setting the error for Date field
     private void setDateError() {
+        // If no date is entered
         if (TextUtils.isEmpty(dateEditText.getText())) {
             dateEditText.setError("Date can't be past date");
             return;
         }
 
+        // Converting the date to required format.
         String dateString = dateEditText.getText().toString();
         Date enteredDate = null;
         try {
@@ -399,6 +424,7 @@ public class CreateActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
+        // If entered date is past date
         if(enteredDate!=null) {
             if (!(enteredDate.compareTo(new Date()) >= 0)) {
                 dateEditText.setError("Date can't be past date");
@@ -408,12 +434,15 @@ public class CreateActivity extends AppCompatActivity {
         }
     }
 
+    // Method for displaying options to the user for selecting the image from Camera/Gallery
     private void SelectImage(){
         final CharSequence[] items={"Camera","Gallery", "Cancel"};
 
+        // Alert box displaying the options
         AlertDialog.Builder builder = new AlertDialog.Builder(CreateActivity.this);
         builder.setTitle("Add Image");
 
+        // Alert box having 3 options: Camera, Gallery, and Cancel
         builder.setItems(items, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
@@ -433,6 +462,7 @@ public class CreateActivity extends AppCompatActivity {
         builder.show();
     }
 
+    // Method for updating the format for date
     private void updateLabel(EditText edittext, Calendar myCalendar) {
         String myFormat = "dd/MMM/yyyy"; //In which you need put here
         SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
@@ -440,18 +470,21 @@ public class CreateActivity extends AppCompatActivity {
         edittext.setText(sdf.format(myCalendar.getTime()));
     }
 
-
+    // This method handles the reuslt of image selection from the user.
     @Override
     public  void onActivityResult(int requestCode, int resultCode, Intent data){
         super.onActivityResult(requestCode, resultCode,data);
 
+        // If the response is SUCCESS.
         if(resultCode== Activity.RESULT_OK){
+            // If the request was Camera
             if(requestCode==REQUEST_CAMERA){
-
                 Bitmap bmp = (Bitmap) data.getExtras().get("data");
                 photoList.add(bmp);
                 photoImageView.setImageBitmap(photoList.get(0));
-            } else if(requestCode==SELECT_FILE){
+            }
+            // If the request was Selecting the file from Gallery
+            else if(requestCode==SELECT_FILE){
                 filePath = data.getData();
                 photoImageView.setImageURI(filePath);
                 uploadImage();
@@ -460,7 +493,9 @@ public class CreateActivity extends AppCompatActivity {
         }
     }
 
+    // Method for uploading the date to firebase
     private void prepareFormDataforFirebase(){
+        // Generating a random string for eventId
         String id = UUID.randomUUID().toString();
         String title = titleEditText.getText().toString();
         String location = placeName;
@@ -469,6 +504,7 @@ public class CreateActivity extends AppCompatActivity {
         String description = desctiptionEditText.getText().toString();
         ArrayList<String> uploadImageURL = firebaseUploadedImagesURLs;
 
+        // Setting the default image, if the user has not uploaded any image
         if(uploadImageURL.size()==0) {
             ArrayList<String> defaultArrayList = new ArrayList<String>();
             defaultArrayList.add("https://firebasestorage.googleapis.com/v0/b/walk-8dfad.appspot.com/o/images%2Fdefault%20image.PNG?alt=media&token=8d0683a5-48b0-49f5-935f-152d76bee948");
