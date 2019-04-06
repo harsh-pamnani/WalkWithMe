@@ -24,12 +24,36 @@ This library is part of the Google Play Services Location API (v.16.0.0) and all
 **Universal Image Loader (v.1.9.5):** 
 This library allows for loading, caching, and displaying images on Android. This application uses this library to handle many different image formats (URIs), and to display the image in the ListView. Source [here](https://github.com/nostra13/Android-Universal-Image-Loader)
 
+**Google Places (v.1.0.0):**
+This library allows the developers to make use of AutoComplete API as well as Places API from Google. This application uses this library for getting all the list of places, when user starts writing for the event location. Source [here](https://cloud.google.com/maps-platform/places/)
+
+**Firebase Storage (v.16.1.0):**
+This library allows the developers to access Firebase storage. This application uses this library for storing images uploaded by the users when creating events. Source [here](https://firebase.google.com/docs/storage/)
+
+**Glide (v.4.9.0):**
+Glide library allows the developers efficiently load images for smooth scrolling in their application. Glide also supports fetcing, decoding and displaying images. This application uses this library while displaying the images on the ViewEvent screen. Source [here](https://bumptech.github.io/glide/)
+
+**Volley (v.1.1.0):**
+Volley library helps the devleopers to make networking for the mobile application easier and faster. This application uses this library for making an HTTP GET request for the places API and get the coordinates of the place. Source [here](https://developer.android.com/training/volley)
+
+**Firebase Core (v.):**
+@Nitish/@Aniruddha Please add description here.
+
+**Firebase Database (v.):**
+@Nitish/@Aniruddha Please add description here.
+
+**Picasso (v.):**
+@Nitish/@Aniruddha Please add description here.
+
 ...
 
 ## Installation Notes
 Installation instructions for markers.
 
-OS Requirements: Android API level 23 (Android 6.0 Marshmallow)
+OS Requirements         :  Android API level 23 (Android 6.0 Marshmallow)
+Android Studio Version  :  3.2.1
+Gradle Version          :  3.2.1
+There are no extra dependencies for this application. We are using libraries, which have been included in the build.gradle file.
 ...
 
 ## Code Examples
@@ -85,18 +109,18 @@ private void getLatLngOfPlace() {
 
 A short description.
 ```
-// The method we implemented that solved our problem
-public static int fibonacci(int fibIndex) {
-    if (memoized.containsKey(fibIndex)) {
-        return memoized.get(fibIndex);
-    } else {
-        int answer = fibonacci(fibIndex - 1) + fibonacci(fibIndex - 2);
-        memoized.put(fibIndex, answer);
-        return answer;
-    }
-}
+public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+	ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+		@Override
+		public void onSuccess(Uri uri) {
+			Log.d(LOG_TAG, "onSuccess: uri= "+ uri.toString());
+			firebaseUploadedImagesURLs.add(uri.toString());
+		}
+	});
 
-// Source: Wikipedia Java [1]
+	progressDialog.dismiss();
+	Toast.makeText(CreateActivity.this, "Uploaded", Toast.LENGTH_SHORT).show();
+}
 ```
 
 **Problem 3: Bypassing Location Permissions**
@@ -158,6 +182,11 @@ List all the main features of your application with a brief description of each 
 
 **Sorting using location tracking:** Using Google Maps Location API and the built in GPS, the users last known location is retrieved and stored. When the walks are pulled from the database and added to the list, the constructor also passes the two sets of coordinates (user and walk location) to compute the distance. The list is then sorted using the Java Collections class. The resulting list of walks is sorted by shortest distance to the user.
 
+**Map on View event page:**
+@Nitish/@Aniruddha Please add description here.
+
+**Carousel view for multiple images:**
+@Nitish/@Aniruddha Please add description here.
 
 ...
 
@@ -182,7 +211,8 @@ The next steps in this project if it were to continue would include the followin
 - Complete the implementation of the Log-In functionality so that users can keep track of their own posts and update the events.
 - Implement a notification functionality to allow SMS or native reminders at a specified time before the walk. This feature would be included in the details screen through a small *bell* icon and give the user the flexibility to decide how often and how soon in advance they would like to be notified.
 - Research and develop a design to maintain the database. Currently walks are not deleted past the walk event date and time.
-- The application could be scaled to allow use on a global scale. For this a design would have to be developed to limit the number of walks that are pulled from the database for a user.
+- The application could be scaled to allow use on a global scale. For this, a design would have to be developed to limit the number of walks that are pulled from the database for a user.
+- Allow usres to upload multiple images for the event photos.
 
 ...
 
