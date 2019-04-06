@@ -15,7 +15,16 @@ Team Tech Intellect:
 Git repository location: [GitLab/WalkWithMe](https://git.cs.dal.ca/chitley/walkwithme)
 
 # Project Summary
-WalkWithMe is a platform where users can find and create nearby walking groups in the city of Halifax, Nova Scotia. The goal is to develop networking events, encourage social experiences, and offering low cost exercise alternatives. The architecture of the application consists of three main screens so that the user can view the list of nearby walking events, create a new walking event, and get additional details about a selected event. Weather details are displayed to the user on the details page if the walk is occurring within the following five days. Additionally, the list of walks is sorted by the shorted distance to the user if the location permissions are accepted. All walks are stored in a Firebase database which is partitioned for walk text data and image files.
+WalkWithMe is a platform where users can find and create nearby walking groups in the city of Halifax, Nova Scotia. The goal is to develop networking events, encourage social experiences, and offering low cost exercise alternatives. The architecture of the application consists of three main screens so that the user can view the list of nearby walking events, create a new walking event, and get additional details about a selected event. Weather details are displayed to the user on the details page if the walk is occurring within the following five days. Additionally, the list of walks is sorted by the shorted distance to the user if the location permissions are accepted. All walks are stored in a Firebase database which is partitioned for walk text data and image files. There are three main screens in this application:
+
+**Home Page:** 
+@Harsh
+
+**View Event Page:** 
+@Deep
+
+**Create Event Page:** 
+@Nitish/@Aniruddha Please add description here.
 
 ## Libraries
 **Google Services Location:** 
@@ -182,7 +191,7 @@ List all the main features of your application with a brief description of each 
 
 **Sorting using location tracking:** Using Google Maps Location API and the built in GPS, the users last known location is retrieved and stored. When the walks are pulled from the database and added to the list, the constructor also passes the two sets of coordinates (user and walk location) to compute the distance. The list is then sorted using the Java Collections class. The resulting list of walks is sorted by shortest distance to the user.
 
-**Map on View event page:**
+**Map access on View event page:**
 @Nitish/@Aniruddha Please add description here.
 
 **Carousel view for multiple images:**
