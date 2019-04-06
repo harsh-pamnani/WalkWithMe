@@ -1,4 +1,4 @@
-# Identification
+﻿# Identification
 
 **WalkWithMe Application**
 
@@ -116,7 +116,7 @@ private void getLatLngOfPlace() {
 
 **Problem 2: Images could not be stored alongside text data in the Firebase database**
 
-A short description.
+There is no facility in Firebase to store images with the text. So, we have stored images separately in the storage of the Firebase. Whenever a user uploads an image, we are fetching the URL of that image and save it in the Firebase along with the walk object. Following method, we have implemented to solve our problem.
 ```
 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
 	ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
@@ -197,10 +197,14 @@ List all the main features of your application with a brief description of each 
 **Carousel view for multiple images:**
 @Nitish/@Aniruddha Please add description here.
 
+**Weather:** When a user views an event, the application displays the weather of the location where the event will take place on the specific date. This way it helps the users to make decisions whether they should join the event or not based on the various weather condition. For example, if there is a high probability of having rain or snow on the event date, the user might not want to attend the event. This application will display the weather of five future days with an image icon in “View Event” Screen using openweathermap API. If the event is going to happen after five days, then it will display the message that “weather will be available soon” because openweathermap API cannot show the weather forecast within the five days. The original temperature is fetched in Fahrenheit which is converted and displayed in Celsius. Also, to improve the user experience, there is a small icon of the weather, which gives the user more clarity about the weather.
+
+**Place Autocomplete:** This feature provides a list of places when the user tries to type for a particular location. This way user does not need to type the entire name of the place and also prevent users from making a typing mistake. It uses Place Autocomplete API of Google, so all the name of locations is very reliable.
+
+**Camera/Gallery Access:** This feature facilitates a user to upload the image of the location where the event is taking place. The user can click photo by accessing their camera. Also, users can upload the picture from their Gallery which will be displayed when the user tries to view the event. 
 ...
 
 ## Final Project Status
-Write a description of the final status of the project. Did you achieve all your goals? What would be the next step for this project (if it were to continue)?
 
 #### Minimum Functionality
 - Creating events (Completed)
