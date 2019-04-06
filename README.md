@@ -186,7 +186,7 @@ public void onRequestPermissionsResult(int requestCode,
 ```
 
 ## Feature Section
-List all the main features of your application with a brief description of each feature.
+Following are the main features of our application.
 
 **Sorting using location tracking:** Using Google Maps Location API and the built in GPS, the users last known location is retrieved and stored. When the walks are pulled from the database and added to the list, the constructor also passes the two sets of coordinates (user and walk location) to compute the distance. The list is then sorted using the Java Collections class. The resulting list of walks is sorted by shortest distance to the user.
 
