@@ -18,7 +18,7 @@ Git repository location: [GitLab/WalkWithMe](https://git.cs.dal.ca/chitley/walkw
 WalkWithMe is a platform where users can find and create nearby walking groups in the city of Halifax, Nova Scotia. The goal is to develop networking events, encourage social experiences, and offering low cost exercise alternatives. The architecture of the application consists of three main screens so that the user can view the list of nearby walking events, create a new walking event, and get additional details about a selected event. Weather details are displayed to the user on the details page if the walk is occurring within the following five days. Additionally, the list of walks is sorted by the shorted distance to the user if the location permissions are accepted. All walks are stored in a Firebase database which is partitioned for walk text data and image files. There are three main screens in this application:
 
 **Home Page:** 
-@Harsh
+The home page will display numerous walking events happening near the user. The application fetches all the nearby events and sorts it according to the distance from the user. A round button on the home page allows the user to create a new event. To promote a minimalistic and user-friendly design, we will not ask the user for any log-in credentials at this time. As soon as the user clicks any specific event, it will direct them to a new view where the event is mentioned in greater detail along with its location in Google Maps.
 
 **View Event Page:** 
 @Deep
@@ -191,17 +191,17 @@ List all the main features of your application with a brief description of each 
 
 **Sorting using location tracking:** Using Google Maps Location API and the built in GPS, the users last known location is retrieved and stored. When the walks are pulled from the database and added to the list, the constructor also passes the two sets of coordinates (user and walk location) to compute the distance. The list is then sorted using the Java Collections class. The resulting list of walks is sorted by shortest distance to the user.
 
-**Map access on View event page:**
-@Nitish/@Aniruddha Please add description here.
-
-**Carousel view for multiple images:**
-@Nitish/@Aniruddha Please add description here.
-
 **Weather:** When a user views an event, the application displays the weather of the location where the event will take place on the specific date. This way it helps the users to make decisions whether they should join the event or not based on the various weather condition. For example, if there is a high probability of having rain or snow on the event date, the user might not want to attend the event. This application will display the weather of five future days with an image icon in “View Event” Screen using openweathermap API. If the event is going to happen after five days, then it will display the message that “weather will be available soon” because openweathermap API cannot show the weather forecast within the five days. The original temperature is fetched in Fahrenheit which is converted and displayed in Celsius. Also, to improve the user experience, there is a small icon of the weather, which gives the user more clarity about the weather.
 
 **Place Autocomplete:** This feature provides a list of places when the user tries to type for a particular location. This way user does not need to type the entire name of the place and also prevent users from making a typing mistake. It uses Place Autocomplete API of Google, so all the name of locations is very reliable.
 
 **Camera/Gallery Access:** This feature facilitates a user to upload the image of the location where the event is taking place. The user can click photo by accessing their camera. Also, users can upload the picture from their Gallery which will be displayed when the user tries to view the event. 
+
+**Map access on View event page:**
+@Nitish/@Aniruddha Please add description here.
+
+**Carousel view for multiple images:**
+@Nitish/@Aniruddha Please add description here.
 ...
 
 ## Final Project Status
