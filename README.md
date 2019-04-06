@@ -58,10 +58,10 @@ Glide library allows the developers efficiently load images for smooth scrolling
 Volley library helps the devleopers to make networking for the mobile application easier and faster. This application uses this library for making an HTTP GET request for the places API and get the coordinates of the place. Source [here](https://developer.android.com/training/volley)
 
 **Firebase Core (v.):**
-Firebase Core dependency enables to connect multiple Firebase apps. 
+Firebase Core dependency enables to connect multiple Firebase apps. Source [here](https://firebase.google.com/docs/android/setup)
 
 **Firebase Database (v.):**
-Firebase Database library allows access to the textual and 
+Firebase Database library allows storage access to the textual and digital data (Images) in the Firebase databse from android application. Source [here](https://firebase.google.com/docs/android/setup) 
 
 **Picasso (v.):**
 Picasso allows hassle-free image load to the application from a URL. Source [here](https://square.github.io/picasso/) 
