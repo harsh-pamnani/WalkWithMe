@@ -21,10 +21,9 @@ WalkWithMe is a platform where users can find and create nearby walking groups i
 The home page will display numerous walking events happening near the user. The application fetches all the nearby events and sorts it according to the distance from the user. A round button on the home page allows the user to create a new event. To promote a minimalistic and user-friendly design, we will not ask the user for any log-in credentials at this time. As soon as the user clicks any specific event, it will direct them to a new view where the event is mentioned in greater detail along with its location in Google Maps.
 
 **View Event Page:** 
-@Deep
+@Nitish
 
-**Create Event Page:** 
-@Nitish/@Aniruddha Please add description here.
+**Create Event Page:** Users can create walking events. The event includes details about the meeting point, date and time of the event, and a description. Also, user can upload the image of the location. The description will allow a user to express in more detail the route, visited landmarks, the type of people they are looking for, and the targeted length of the walk.
 
 ## Libraries
 **Google Services Location:** 
