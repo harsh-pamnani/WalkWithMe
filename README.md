@@ -6,7 +6,7 @@ Team Tech Intellect:
 
 | Name              | Student ID    | E-mail |
 | ------            | ------        | ------ |
-| Aniruddha Chitley | B00808320     | @dal.ca |
+| Aniruddha Chitley | B00808320     | aniruddha.chitley@dal.ca |
 | Deep Shah         | B00796368     | dp371796@dal.ca |
 | Harsh Pamnani     | B00802614     | hr340096@dal.ca |
 | Nitish Bhardwaj   | B00811535     | @dal.ca |
