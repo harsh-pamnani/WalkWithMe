@@ -1,3 +1,5 @@
+//View Activity code to display the event details selected at home screen.
+
 package walkwithme.mc.dal.com.walkwithme;
 
 import android.content.Context;
@@ -75,9 +77,7 @@ public class ViewActivity extends AppCompatActivity implements OnMapReadyCallbac
     String longitude;
     String weatherDate;
 
-//
 //    //Fetching Images from the Drawable directory
-//    int[] sampleImages = {R.drawable.walk_2, R.drawable.walk_1, R.drawable.walk_3, R.drawable.walk_4};
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -89,8 +89,6 @@ public class ViewActivity extends AppCompatActivity implements OnMapReadyCallbac
             // Intent object passed from Home Activity
             Intent intent = getIntent();
 
-            //Fetching the resources passed in the  Intent from Home Activity
-            //event = viewActivityJsonObj.saveData(intent.getStringExtra("event"));
             //pull data from the intent/bundle
             Bundle dataBundle = getIntent().getBundleExtra("bundle");
 
@@ -159,21 +157,10 @@ public class ViewActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
     }
 
-//    // Code to swipe the images in the carousel
-//    ImageListener imageListener = new ImageListener() {
-//        @Override
-//        public void setImageForPosition(int position, ImageView imageView) {
-//            imageView.setImageResource(sampleImages[position]);
-//        }
-//    };
-
     @Override
     public void onMapReady(GoogleMap googleMap) {
 
         mMap = googleMap;
-
-        // Add a marker at the Event Location
-
 
         // Setting the location coordinates in google Map
         eventLoc = new LatLng(eventCoordinateLang, eventCoordinateLong);
@@ -267,28 +254,10 @@ public class ViewActivity extends AppCompatActivity implements OnMapReadyCallbac
                         //Glide library to download image and set to ImageView, append the url above with the icon returned in the weather JSON
                         Glide.with(ViewActivity.this).load(OPEN_WEATHER_ICON_URL+description+".png").into(icon);
 
-                        //switch (description) {
-                          //  case "Rain":
-                            //    icon.setBackgroundResource(R.drawable.rain);
-                              //  break;
-                            //case "Clouds":
-                             //   icon.setBackgroundResource(R.drawable.cloud);
-                              //  break;
-                            //case "Snow":
-                              //  icon.setBackgroundResource(R.drawable.snow);
-                                //break;
-                            //default:
-                              //  icon.setBackgroundResource(R.drawable.clear);
-                                //break;
-                        //}
-
-                      //  break;
                     }
 
 
                 }
-
-                //JSONObject zero = one.getJSONObject(0);
 
 
             } catch (JSONException e) {
