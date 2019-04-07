@@ -266,6 +266,12 @@ The next steps in this project if it were to continue would include the followin
 
 [N1] "Google Maps Platform  |  Google Developers", Google Developers, 2019. [Online]. Available: https://developers.google.com/maps/documentation/. [Accessed: 01- Apr- 2019].
 
+[]"5 day weather forecast - OpenWeatherMap", Openweathermap.org, 2019. [Online]. Available: https://openweathermap.org/forecast5.
+
+[]"Overview  |  Places API  |  Google Developers", Google Developers, 2019. [Online]. Available: https://developers.google.com/places/web-service/intro.
+
+[]"Place Autocomplete  |  Places API  |  Google Developers", Google Developers, 2019. [Online]. Available: https://developers.google.com/places/web-service/autocomplete.
+
 #### Research Material:
 
 [u2] “Request App Permissions,” Android Developer Docs, 2019. [Online]. Available: https://developer.android.com/training/permissions/requesting.html.
@@ -290,6 +296,26 @@ The next steps in this project if it were to continue would include the followin
 
 [] “Java Collections Class,” Android Developer Docs, 2019. [Online]. Available: https://developer.android.com/reference/java/util/Collections
 
+[]"Accessing the Camera and Stored Media | CodePath Android Cliffnotes", Guides.codepath.com, 2019. [Online]. Available: https://guides.codepath.com/android/Accessing-the-Camera-and-Stored-Media.
+
+[]S. Android, S. Hassaini, N. Ghaffar and C. Rathod, "Show Error on the tip of the Edit Text Android", Stack Overflow, 2019. [Online]. Available: https://stackoverflow.com/questions/18225365/show-error-on-the-tip-of-the-edit-text-android.
+
+[]H. Clicked?, S. Ganesh, س. میرعظیمی and P. Shah, "How to Change color of Button in Android when Clicked?", Stack Overflow, 2019. [Online]. Available: https://stackoverflow.com/questions/3882064/how-to-change-color-of-button-in-android-when-clicked.
+
+[]H. Firebase?, A. singh, J. Person and Y. P, "How to Get Image URL after uploading an image form android to Firebase?", Stack Overflow, 2019. [Online]. Available: https://stackoverflow.com/questions/44686647/how-to-get-image-url-after-uploading-an-image-form-android-to-firebase.
+
+[]"How to Upload Images to Firebase from an Android App", Code Envato Tuts+, 2019. [Online]. Available: https://code.tutsplus.com/tutorials/image-upload-to-firebase-in-android-application--cms-29934.
+
+[]R. Tamada, "Android Material Design Floating Labels for EditText", AndroidHive, 2019. [Online]. Available: https://www.androidhive.info/2015/09/android-material-design-floating-labels-for-edittext/.
+
+[]"yomiyusuf/InstaLogin", GitHub, 2019. [Online]. Available: https://github.com/yomiyusuf/InstaLogin/.
+
+[]"Migrating to the New Places SDK Client  |  Places SDK for Android  |  Google Developers", Google Developers, 2019. [Online]. Available: https://developers.google.com/places/android-sdk/client-migration.
+
+[]D. [duplicate], A. Jasmin, V. Parihar and O. Damiean, "Detect whether there is an Internet connection available on Android", Stack Overflow, 2019. [Online]. Available: https://stackoverflow.com/questions/4238921/detect-whether-there-is-an-internet-connection-available-on-android.
+
+
+
 #### Stock Images
 
-[] ...
+[]"Walk Svg", OnlineWebFonts.COM, 2019. [Online]. Available: https://www.onlinewebfonts.com/icon/366314.
