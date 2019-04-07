@@ -20,10 +20,8 @@ import java.util.ArrayList;
 
 public class WalkListAdapter extends ArrayAdapter<Walk> {
 
-
     private Context mContext;
     private int mResource;
-
 
     //ViewHolder class is to remove lag when loading the list. Instead of all list items being
     // loaded at the same time, now only the amount to fill the screen are loaded.
@@ -33,7 +31,6 @@ public class WalkListAdapter extends ArrayAdapter<Walk> {
         TextView location;
         ImageView image;
     }
-
 
     //Constructor
     public WalkListAdapter(Context context, int resource, ArrayList<Walk> objects) {
@@ -105,9 +102,12 @@ public class WalkListAdapter extends ArrayAdapter<Walk> {
     }
 
 
-    /*
+    /**
+     * This external function allows for the flexibility of any given image URI to be displayed in
+     * a ImageView (in the ListView) and also keep it original aspect ratio.
     Universal Image Loader
-    Author: https://www.stacktips.com/tutorials/android/universal-image-loader-library-in-android
+    Author: Sergey Tarasevich (2016)
+    Reference Link: https://github.com/nostra13/Android-Universal-Image-Loader
      */
     private void setupImageLoader(){
         DisplayImageOptions defaultOptions = new DisplayImageOptions.Builder()

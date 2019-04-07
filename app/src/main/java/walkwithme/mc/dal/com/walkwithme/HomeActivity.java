@@ -4,7 +4,6 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.icu.text.SymbolTable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.support.design.widget.FloatingActionButton;
@@ -30,7 +29,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
-import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -38,23 +36,28 @@ import com.google.android.gms.tasks.OnSuccessListener;
 
 public class HomeActivity extends AppCompatActivity {
 
+    //Declare static variables
     public static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 9003;
     private static final String TAG = "MainActivity";
 
+    //Declare client for location tracking
     private FusedLocationProviderClient mFusedLocationClient;
+
+    //Declare booleans for status checks
     private boolean mLocationPermissionGranted = false;
     private boolean firstOnStart = true;
     private boolean gpsCoordinatesFound = false;
 
-    //default location is Citadel Hill, Halifax, NS
+    //Declare user lat and long, default location is Citadel Hill, Halifax, NS
     Double currentLatitude = 44.647398;
     Double currentLongitude  = -63.580364;
 
+    //Declare UI elements
     ListView walkList;
     FloatingActionButton addFab;
+
+    //Declare empty ArrayList for walk events
     ArrayList<Walk> walkArrayList = new ArrayList<>();
-
-
 
 
 
@@ -64,7 +67,7 @@ public class HomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_home);
 
         // Code will execute if there is an internet connectivity
-        if (isNetworkStatusAvialable(getApplicationContext())) {
+        if (isNetworkStatusAvailable(getApplicationContext())) {
             Log.d(TAG, "onCreate: entered");
 
             //instantiate the location provider client
@@ -111,7 +114,7 @@ public class HomeActivity extends AppCompatActivity {
                 @Override
                 public void onCancelled(DatabaseError databaseError) {
                     System.out.println("The read failed: " + databaseError.getCode());
-                    Toast.makeText(getApplicationContext(), "Oops! Error Occured while fetchig data.", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "Oops! Error Occurred while fetching data.", Toast.LENGTH_LONG).show();
                 }
             });
 
@@ -194,8 +197,10 @@ public class HomeActivity extends AppCompatActivity {
         }
     }
 
-    //Method to check internet connectivity
-    public static boolean isNetworkStatusAvialable(Context context) {
+    /**
+     * Method to check internet connectivity
+     */
+    public static boolean isNetworkStatusAvailable(Context context) {
         ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         if (connectivityManager != null) {
             NetworkInfo netInfos = connectivityManager.getActiveNetworkInfo();
@@ -208,8 +213,8 @@ public class HomeActivity extends AppCompatActivity {
 
     /**
      * Checks if Location permission has been granted in the past
-     * https://developer.android.com/training/permissions/requesting.html
-     * https://developer.android.com/guide/topics/permissions/overview
+     * if not, prompt a system dialogue
+     * if yes, mark granted and continue to getting GPS coordinates
      */
     private void getLocationPermission(){
 
@@ -239,7 +244,9 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     /**
-     * https://developer.android.com/training/permissions/requesting.html
+     * Determines the results of the system dialogue.
+     * If the user accepted, the array grantResults will be non-empty
+     * else if declined it will be empty
      */
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults) {
@@ -274,15 +281,14 @@ public class HomeActivity extends AppCompatActivity {
     }
 
 
+    /**
+     * Displays the list of walks to the user. If coordinates have been received sort the list,
+     * otherwise display it as-is (unsorted in order of entry to the DB)
+     * @param gpsReceived: true of coordinates have been received; else false
+     */
     private void displayList(boolean gpsReceived){
 
         Log.d(TAG, "displayList: entered gps: " + gpsReceived);
-//
-//        //array containing all walk items
-//        walkArrayList = new ArrayList<>();
-//
-//        //populate array
-//        retrieveData();
 
         //if the gps is available sort by distance to user
         if(gpsReceived) {
@@ -316,7 +322,10 @@ public class HomeActivity extends AppCompatActivity {
 
 
     /**
-     * https://developer.android.com/training/location/retrieve-current.html
+     * This function gets the last known location of the usr using the FusedLocationClient.
+     * A mandatory permission check has to be done first.
+     * If the location values are available, store them and call the display method to sort it
+     * else if the location values are not available, call the display method but do not sort it
      */
     private void getLastLocation() {
 
@@ -334,16 +343,20 @@ public class HomeActivity extends AppCompatActivity {
                 if (location != null) {
                     Log.d(TAG, "onSuccess: location not null");
 
+                    //store the lat and long values
                     currentLatitude = location.getLatitude();
                     currentLongitude = location.getLongitude();
                     Log.d(TAG, "onSuccess: ["+ currentLatitude +","+ currentLongitude +"]");
 
+                    //update global bool to be true, coordinates have been found!
                     gpsCoordinatesFound = true;
 
+                    //display the list of walks and sort them
                     displayList(true);
 
                 }else{
                     Log.d(TAG, "onSuccess: location null");
+                    //else, nothing came through, display the unsorted list
                     displayList(false);
                 }
             }
