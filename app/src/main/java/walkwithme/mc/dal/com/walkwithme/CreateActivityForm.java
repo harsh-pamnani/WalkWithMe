@@ -7,6 +7,7 @@ import java.util.List;
 
 public class CreateActivityForm {
 
+    // All the fields for Walk event
     String id;
     String title;
     String location;
@@ -17,6 +18,7 @@ public class CreateActivityForm {
     double latitude;
     double longitude;
 
+    // Getters and Setters for all of the above variables
     public double getLatitude() {
         return latitude;
     }
@@ -104,6 +106,7 @@ public class CreateActivityForm {
         this.longitude = longitude;
     }
 
+    // Empty constructor
     public CreateActivityForm() {
     }
 }

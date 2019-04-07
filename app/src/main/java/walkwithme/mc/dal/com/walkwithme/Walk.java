@@ -1,20 +1,17 @@
 package walkwithme.mc.dal.com.walkwithme;
 
 import android.location.Location;
-
 import java.util.ArrayList;
 
 public class Walk {
-    //Elements used for the Home Screen
+
+    //Variables used for the Home Screen
     private String eventName;
     private String eventDatetime;
     private String eventLocation;
     private String eventImageURL;
 
-    public Walk() {
-    }
-
-    //Remaining elements for Create and View Activity
+    //Remaining variables for Create and View Activity
     private String eventId;
     private Double eventCoordinateLat;
     private Double eventCoordinateLong;
@@ -24,6 +21,7 @@ public class Walk {
 
     private Float distanceToUser; //distance in km
 
+    //Constructor
     public Walk(double userLatitude, double userLongitude, double latitude, double longitude, String id, String name, String date, String time, String location, String imgURL, ArrayList<String> carouselImages,String eventDescription) {
 
         this.eventName = name;
@@ -39,22 +37,32 @@ public class Walk {
         this.eventWeather = "";
         this.carouselImages = carouselImages;
 
-
         this.distanceToUser = calculateDistance(userLatitude, userLongitude, latitude, longitude);
 
     }
 
+    /**
+     * Method that takes two coordinates (user and walk event) and computes the distance between them.
+     * @param userLatitude
+     * @param userLongitude
+     * @param walkLatitude
+     * @param walkLongitude
+     * @return
+     */
     private Float calculateDistance(double userLatitude, double userLongitude, double walkLatitude, double walkLongitude) {
 
+        //create two location objects
         Location userLocation = new Location("user");
         Location walkLocation = new Location("walk");
 
+        //populate the two location objects with the input values
         userLocation.setLatitude(userLatitude);
         userLocation.setLongitude(userLongitude);
 
         walkLocation.setLatitude(walkLatitude);
         walkLocation.setLongitude(walkLongitude);
 
+        //calculate the distance between locations in meters
         float distance = userLocation.distanceTo(walkLocation);
 
         //convert meters to kilometers

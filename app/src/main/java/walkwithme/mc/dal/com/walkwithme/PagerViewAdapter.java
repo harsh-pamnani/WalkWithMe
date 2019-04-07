@@ -1,3 +1,5 @@
+//Reference: https://github.com/codepath/android_guides/wiki/Displaying-Images-with-the-Picasso-Library
+
 package walkwithme.mc.dal.com.walkwithme;
 
 import android.content.Context;
