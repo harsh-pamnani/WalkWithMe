@@ -171,6 +171,7 @@ public class ViewActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     }
 
+    // This method is used to check internet connectivity and return boolean as the result
     public static boolean isNetworkStatusAvialable(Context context) {
         ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         if (connectivityManager != null) {
@@ -182,6 +183,7 @@ public class ViewActivity extends AppCompatActivity implements OnMapReadyCallbac
         return false;
     }
 
+    // Use of Async Task
     public class getWeather extends AsyncTask<String, String, String> {
         public static final String TAG = "Deep";
 
@@ -226,14 +228,14 @@ public class ViewActivity extends AppCompatActivity implements OnMapReadyCallbac
 
                 double k = 273.15;
 
-
+                //logic to fetch data from json object
                 JSONObject Obj = new JSONObject(str);
 
                 Log.w(TAG, Obj.toString());
 
                 JSONArray one = Obj.getJSONArray("list");
 
-
+                //logic to fetch data from json array
                 for (int i = 0; i < one.length(); i++) {
                     JSONObject c = one.getJSONObject(i);
                     JSONObject main = c.getJSONObject("main");
