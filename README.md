@@ -300,7 +300,7 @@ The next steps in this project if it were to continue would include the followin
 
 []S. Android, S. Hassaini, N. Ghaffar and C. Rathod, "Show Error on the tip of the Edit Text Android", Stack Overflow, 2019. [Online]. Available: https://stackoverflow.com/questions/18225365/show-error-on-the-tip-of-the-edit-text-android.
 
-[]H. Clicked?, S. Ganesh, س. میرعظیمی and P. Shah, "How to Change color of Button in Android when Clicked?", Stack Overflow, 2019. [Online]. Available: https://stackoverflow.com/questions/3882064/how-to-change-color-of-button-in-android-when-clicked.
+[]H. Clicked?, S. Ganesh and P. Shah, "How to Change color of Button in Android when Clicked?", Stack Overflow, 2019. [Online]. Available: https://stackoverflow.com/questions/3882064/how-to-change-color-of-button-in-android-when-clicked.
 
 []H. Firebase?, A. singh, J. Person and Y. P, "How to Get Image URL after uploading an image form android to Firebase?", Stack Overflow, 2019. [Online]. Available: https://stackoverflow.com/questions/44686647/how-to-get-image-url-after-uploading-an-image-form-android-to-firebase.
 
